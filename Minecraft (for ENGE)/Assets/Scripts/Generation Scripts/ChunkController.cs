@@ -67,14 +67,17 @@ public class ChunkController : MonoBehaviour
                 for(int z = 0; z < 18; z++)
                 {
                     Debug.Log((int)(Mathf.PerlinNoise(10 * (x + offX), 10 * (z + offZ))) + 1);
+
                     if(x == 0 || z== 0 || x == 17 || z == 17)
                     {
-                        blocks[x, y, z] = null;
+                        blocks[x, y, z] = controller.blocks[0];
                     }
                     else if((int)(Mathf.PerlinNoise((x + offX)/16 , (z + offZ)/16 ) * 2) + 1 >= y)
                     {
-
-                        blocks[x, y, z] = controller.blocks[1];
+                        int r = Random.Range(1, 3);
+                        blocks[x, y, z] = controller.blocks[r];
+                        
+                        
 
                     }
                     else
@@ -88,7 +91,7 @@ public class ChunkController : MonoBehaviour
 
   
 
-    private void GenerateMesh()
+    public void GenerateMesh()
     {
         float at = Time.realtimeSinceStartup;
         List<int> Triangles = new List<int>();
@@ -108,7 +111,7 @@ public class ChunkController : MonoBehaviour
 
                     int[,] Faces = new int[6, 9]{
                         {0, 1, 2, 3, 0, 1, 0, 0, 0},     //top
-                        {7, 6, 5, 4, 0, -1, 0, 1, 0},   //bottom
+                        {7, 6, 5, 4, 0, -1, 0, 0, 0},   //bottom
                         {2, 1, 5, 6, 0, 0, 1, 1, 1},     //right
                         {0, 3, 7, 4, 0, 0, -1,  1, 1},   //left
                         {3, 2, 6, 7, 1, 0, 0,  1, 1},    //front
@@ -127,9 +130,23 @@ public class ChunkController : MonoBehaviour
                         Triangles.AddRange(new List<int>() { v, v + 1, v + 2, v, v + 2, v + 3 });
 
                         // Add uvs
-                        Vector2 bottomleft = new Vector2(Faces[facenum, 7], Faces[facenum, 8]) / 2f;
+                        Vector2 bottomleft = new Vector2(Faces[facenum, 7], Faces[facenum, 8]) /( 2f * (controller.blocks.Length - 1));
+                        bottomleft.x += inde() / (controller.blocks.Length - 1);
+                        uv.AddRange(new List<Vector2>() { bottomleft + new Vector2(0, 0.5f / (controller.blocks.Length-1)), bottomleft + new Vector2(0.5f/ (controller.blocks.Length - 1), 0.5f / (controller.blocks.Length - 1)), bottomleft + new Vector2(0.5f / (controller.blocks.Length - 1), 0), bottomleft });
+                    }
 
-                        uv.AddRange(new List<Vector2>() { bottomleft + new Vector2(0, 0.5f), bottomleft + new Vector2(0.5f, 0.5f), bottomleft + new Vector2(0.5f, 0), bottomleft });
+                    float inde()
+                    {
+
+                        for(int i = 0; i < controller.blocks.Length; i++) 
+                        {
+                            if (controller.blocks[i].Equals( blocks[x, y, z]))
+                            {
+                                Debug.Log("Matched" + i);
+                                return i - 1 ;
+                            }
+                        }
+                        return 0;
                     }
                 }
 

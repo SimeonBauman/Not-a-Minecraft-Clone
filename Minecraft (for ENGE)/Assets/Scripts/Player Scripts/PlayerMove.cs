@@ -27,7 +27,7 @@ public class PlayerMove : MonoBehaviour
             vSpeed = 0; 
             if (Input.GetKey("space"))
             { 
-                vSpeed = 3;
+                vSpeed = 4;
             }
         }
 

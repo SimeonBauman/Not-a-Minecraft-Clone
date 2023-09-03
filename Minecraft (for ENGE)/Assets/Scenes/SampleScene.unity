@@ -267,6 +267,7 @@ MonoBehaviour:
   timers: []
   blocks:
   - {fileID: 8092650829203356739, guid: 4f6f9ae749a037941bf1684e48d73535, type: 3}
+  - {fileID: 2107057388103114735, guid: 4d433c96ff085d14582df444643145aa, type: 3}
   - {fileID: 8092650829203356739, guid: 3ff997e1b12dc7c41b22e07f0686f4af, type: 3}
 --- !u!1 &963194225
 GameObject:
@@ -280,6 +281,7 @@ GameObject:
   - component: {fileID: 963194227}
   - component: {fileID: 963194226}
   - component: {fileID: 963194231}
+  - component: {fileID: 963194232}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -367,6 +369,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 1370036743}
   sensitivity: 50
+--- !u!114 &963194232
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963194225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfafc403a8aed5a4498fffb7db98d3b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  controller: {fileID: 933208324}
 --- !u!1 &1370036738
 GameObject:
   m_ObjectHideFlags: 0
@@ -420,7 +435,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 3eb5b1a323f6a78478f2c96e98d8ff64, type: 2}
+  - {fileID: 2100000, guid: c8bdde88303ccc24eaad965bb5a290d1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
