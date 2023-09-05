@@ -22,6 +22,8 @@ public class ChunkController
     MeshCollider meshCollider;
     MeshFilter meshFilter;
 
+    Vector3 size = new Vector3(18, 20, 18);
+
     Vector3[] VertPos = new Vector3[8]{
                         new Vector3(-1, 1, -1), new Vector3(-1, 1, 1),
                         new Vector3(1, 1, 1), new Vector3(1, 1, -1),
@@ -48,7 +50,7 @@ public class ChunkController
         chunkObject.AddComponent<MeshRenderer>().material = controller.texturePack;
         chunkObject.transform.position = pos;
         
-        blocks = new GameObject[18, 124, 18];
+        blocks = new GameObject[(int)size.x, (int)size.y, (int)size.z];
         generateChunk();
         
     }
@@ -60,11 +62,11 @@ public class ChunkController
         float offX = (chunkObject.transform.position.x - 7.5f);
         float offZ = (chunkObject.transform.position.z - 7.5f) ;
 
-        for (int y = 0; y < 124; y++) 
+        for (int y = 0; y < size.y; y++) 
         {
-            for (int x = 0; x < 18; x++)
+            for (int x = 0; x < size.x; x++)
             {
-                for(int z = 0; z < 18; z++)
+                for(int z = 0; z < size.z; z++)
                 {
                     Debug.Log((int)(Mathf.PerlinNoise(10 * (x + offX), 10 * (z + offZ))) + 1);
 
@@ -100,9 +102,9 @@ public class ChunkController
         List<Vector3> Verticies = new List<Vector3>();
         List<Vector2> uv = new List<Vector2>();
        
-        for (int x = 1; x < 18 - 1; x++)
-            for (int y = 1; y < 124 - 1; y++)
-                for (int z = 1; z < 18 - 1; z++)
+        for (int x = 1; x < size.x - 1; x++)
+            for (int y = 1; y < size.y - 1; y++)
+                for (int z = 1; z < size.z - 1; z++)
                 {
                     
                     if (blocks[x, y, z] != controller.blocks[0])
