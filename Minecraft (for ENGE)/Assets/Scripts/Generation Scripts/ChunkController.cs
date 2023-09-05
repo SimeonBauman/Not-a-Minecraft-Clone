@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public class ChunkController : MonoBehaviour
+public class ChunkController
 {
     public PlaceChunks controller;
     public GameObject player;
@@ -15,50 +15,50 @@ public class ChunkController : MonoBehaviour
     bool exists = false;
 
     byte[,,] Voxels;
-    private void Start()
+
+   
+
+    public GameObject chunkObject;
+    MeshCollider meshCollider;
+    MeshFilter meshFilter;
+
+    Vector3[] VertPos = new Vector3[8]{
+                        new Vector3(-1, 1, -1), new Vector3(-1, 1, 1),
+                        new Vector3(1, 1, 1), new Vector3(1, 1, -1),
+                        new Vector3(-1, -1, -1), new Vector3(-1, -1, 1),
+                        new Vector3(1, -1, 1), new Vector3(1, -1, -1),
+                    };
+
+    int[,] Faces = new int[6, 9]{
+                        {0, 1, 2, 3, 0, 1, 0, 0, 0},     //top
+                        {7, 6, 5, 4, 0, -1, 0, 0, 0},   //bottom
+                        {2, 1, 5, 6, 0, 0, 1, 1, 1},     //right
+                        {0, 3, 7, 4, 0, 0, -1,  1, 1},   //left
+                        {3, 2, 6, 7, 1, 0, 0,  1, 1},    //front
+                        {1, 0, 4, 5, -1, 0, 0,  1, 1}    //back
+                    };
+
+
+    public ChunkController(Vector3 pos, PlaceChunks controller)
     {
-        controller.timers[index] = 0;
-        blocks = new GameObject[18,124,18];
+        this.controller = controller;
+        chunkObject = new GameObject();
+        meshFilter = chunkObject.AddComponent<MeshFilter>();
+        meshCollider = chunkObject.AddComponent<MeshCollider>();
+        chunkObject.AddComponent<MeshRenderer>().material = controller.texturePack;
+        chunkObject.transform.position = pos;
+        
+        blocks = new GameObject[18, 124, 18];
         generateChunk();
-        check();
-    }
-    private void Update()
-    {
-        Vector3 pos = new Vector3(player.transform.position.x, 0f, player.transform.position.z);
-        float dist = Vector3.Distance(transform.position, pos);
-
-        if(dist > 50)
-        {
-            time = (dist / 10) - 3;
-            controller.timers[index] = Time.time + time;
-            transform.gameObject.SetActive(false);
-        }
-    }
-    public void check()
-    {
-        transform.gameObject.SetActive(true);
-        Vector3 pos = new Vector3(player.transform.position.x, 0f, player.transform.position.z);
-        float dist = Vector3.Distance(transform.position, pos);
-
-        if (dist > 50)
-        {
-            time = (dist / 10) - 3;
-            controller.timers[index] = Time.time + time;
-            transform.gameObject.SetActive(false);
-        }
-        else if(!exists)
-        {
-            Debug.Log("creatting");
-            GenerateMesh();
-            exists = true;
-        }
         
     }
+    
+    
 
     void generateChunk()
     {
-        float offX = (transform.position.x - 7.5f);
-        float offZ = (transform.position.z - 7.5f) ;
+        float offX = (chunkObject.transform.position.x - 7.5f);
+        float offZ = (chunkObject.transform.position.z - 7.5f) ;
 
         for (int y = 0; y < 124; y++) 
         {
@@ -76,7 +76,7 @@ public class ChunkController : MonoBehaviour
                     {
                         int r = Random.Range(1, 3);
                         blocks[x, y, z] = controller.blocks[r];
-                        
+                        blocks[x, y, z].GetComponent<Block>().textIndex = r-1;
                         
 
                     }
@@ -87,37 +87,24 @@ public class ChunkController : MonoBehaviour
                 }
             }
         }
+        GenerateMesh();
     }
 
-  
+    
 
     public void GenerateMesh()
     {
+        
         float at = Time.realtimeSinceStartup;
         List<int> Triangles = new List<int>();
         List<Vector3> Verticies = new List<Vector3>();
         List<Vector2> uv = new List<Vector2>();
-
+       
         for (int x = 1; x < 18 - 1; x++)
             for (int y = 1; y < 124 - 1; y++)
                 for (int z = 1; z < 18 - 1; z++)
                 {
-                    Vector3[] VertPos = new Vector3[8]{
-                        new Vector3(-1, 1, -1), new Vector3(-1, 1, 1),
-                        new Vector3(1, 1, 1), new Vector3(1, 1, -1),
-                        new Vector3(-1, -1, -1), new Vector3(-1, -1, 1),
-                        new Vector3(1, -1, 1), new Vector3(1, -1, -1),
-                    };
-
-                    int[,] Faces = new int[6, 9]{
-                        {0, 1, 2, 3, 0, 1, 0, 0, 0},     //top
-                        {7, 6, 5, 4, 0, -1, 0, 0, 0},   //bottom
-                        {2, 1, 5, 6, 0, 0, 1, 1, 1},     //right
-                        {0, 3, 7, 4, 0, 0, -1,  1, 1},   //left
-                        {3, 2, 6, 7, 1, 0, 0,  1, 1},    //front
-                        {1, 0, 4, 5, -1, 0, 0,  1, 1}    //back
-                    };
-
+                    
                     if (blocks[x, y, z] != controller.blocks[0])
                         for (int o = 0; o < 6; o++)
                             if (blocks[x + Faces[o, 4], y + Faces[o, 5], z + Faces[o, 6]] == controller.blocks[0])
@@ -131,11 +118,11 @@ public class ChunkController : MonoBehaviour
 
                         // Add uvs
                         Vector2 bottomleft = new Vector2(Faces[facenum, 7], Faces[facenum, 8]) /( 2f * (controller.blocks.Length - 1));
-                        bottomleft.x += inde() / (controller.blocks.Length - 1);
+                        bottomleft.x += blocks[x,y,z].GetComponent<Block>().textIndex / (controller.blocks.Length - 1);
                         uv.AddRange(new List<Vector2>() { bottomleft + new Vector2(0, 0.5f / (controller.blocks.Length-1)), bottomleft + new Vector2(0.5f/ (controller.blocks.Length - 1), 0.5f / (controller.blocks.Length - 1)), bottomleft + new Vector2(0.5f / (controller.blocks.Length - 1), 0), bottomleft });
                     }
 
-                    float inde()
+                    /*float inde()
                     {
 
                         for(int i = 0; i < controller.blocks.Length; i++) 
@@ -147,16 +134,16 @@ public class ChunkController : MonoBehaviour
                             }
                         }
                         return 0;
-                    }
+                    }*/
                 }
 
-        GetComponent<MeshFilter>().mesh = new Mesh()
+        meshFilter.mesh = new Mesh()
         {
             vertices = Verticies.ToArray(),
             triangles = Triangles.ToArray(),
             uv = uv.ToArray()
         };
-        GetComponent<MeshCollider>().sharedMesh = new Mesh()
+        meshCollider.sharedMesh = new Mesh()
         {
             vertices = Verticies.ToArray(),
             triangles = Triangles.ToArray(),

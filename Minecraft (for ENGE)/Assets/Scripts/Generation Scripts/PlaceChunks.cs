@@ -6,30 +6,37 @@ public class PlaceChunks : MonoBehaviour
 {
     private int chunkNum = 2;
 
-    public GameObject chunk;
+ 
 
     public GameObject player;
 
-    public ChunkController[] chunks;
+    public ChunkController[,] chunks;
 
     public float[] timers;
 
     public GameObject[] blocks;
 
+    public Material texturePack;
+
+    public GameObject highlighter;
+
     void Start()
     {
-        chunks = new ChunkController[chunkNum * chunkNum];
+        
+        player = new Player(new Vector3(10, 50, 10),this).p;
+        chunks = new ChunkController[chunkNum,chunkNum];
         timers= new float[chunkNum * chunkNum];
         
         place();
+        
     }
 
     
 
     private void place()
     {
-        int startx = 0 - ((chunkNum / 2) * 16);
-        int startz = 0 - ((chunkNum / 2) * 16);
+        int startx = 0;
+        int startz = 0 ;
 
         int num = 0;
 
@@ -37,25 +44,24 @@ public class PlaceChunks : MonoBehaviour
         {
             for(int j = 0; j < chunkNum; j++)
             {
-                ChunkController c = Instantiate(chunk, new Vector3((i * 16) + startx, 0, (j * 16) + startz), transform.rotation).GetComponent<ChunkController>(); ;
-                chunks[num] = c;
+                ChunkController c = new ChunkController(new Vector3(startx + (i*16),0,startz + (j*16)),this);
+                chunks[i,j] = c;
                 c.controller = this;
                 c.player = player;
                 c.index = num;
+                
                 num++;
             }
         }
 
     }
 
-    private void Update()
+    public ChunkController GetChunkFromVector3(Vector3 pos)
     {
-        for(int i = 0; i < timers.Length; i++)
-        {
-            if (timers[i] <= Time.time)
-            {
-                chunks[i].check();
-            }
-        }
+
+        int x = Mathf.FloorToInt(pos.x / 16);
+        int z = Mathf.FloorToInt(pos.z / 16);
+        return chunks[x, z];
+
     }
 }
