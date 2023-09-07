@@ -18,7 +18,7 @@ public class Build : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         
         RaycastHit hit;
@@ -69,7 +69,7 @@ public class Build : MonoBehaviour
     void drawBox(Vector3 p)
     {
         highLighter.SetActive(true);
-        p -= transform.forward * .01f;
+        p += transform.forward * .01f;
         p = new Vector3(Mathf.RoundToInt(p.x), Mathf.RoundToInt(p.y), Mathf.RoundToInt(p.z));
 
         highLighter.transform.position = p;

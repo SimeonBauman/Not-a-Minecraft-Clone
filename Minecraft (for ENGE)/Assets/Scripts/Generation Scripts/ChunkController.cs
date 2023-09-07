@@ -16,7 +16,7 @@ public class ChunkController
 
     byte[,,] Voxels;
 
-   
+    public bool created = false;
 
     public GameObject chunkObject;
     MeshCollider meshCollider;
@@ -51,14 +51,15 @@ public class ChunkController
         chunkObject.transform.position = pos;
         
         blocks = new GameObject[(int)size.x, (int)size.y, (int)size.z];
-        generateChunk();
+        
         
     }
     
     
 
-    void generateChunk()
+    public IEnumerator generateChunk()
     {
+        created = true;
         float offX = (chunkObject.transform.position.x - 7.5f);
         float offZ = (chunkObject.transform.position.z - 7.5f) ;
 
@@ -88,6 +89,8 @@ public class ChunkController
                     }
                 }
             }
+            
+            yield return null;
         }
         GenerateMesh();
     }
