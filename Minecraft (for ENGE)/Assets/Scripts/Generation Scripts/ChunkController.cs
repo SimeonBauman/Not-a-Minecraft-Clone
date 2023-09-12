@@ -11,7 +11,7 @@ public class ChunkController
     public int index;
 
     [SerializeField]
-    public GameObject[,,] blocks;
+    public Block[,,] blocks;
     bool exists = false;
 
     byte[,,] Voxels;
@@ -50,47 +50,49 @@ public class ChunkController
         chunkObject.AddComponent<MeshRenderer>().material = controller.texturePack;
         chunkObject.transform.position = pos;
         
-        blocks = new GameObject[(int)size.x, (int)size.y, (int)size.z];
+        blocks = new Block[(int)size.x, (int)size.y, (int)size.z];
         
         
     }
     
     
 
-    public IEnumerator generateChunk()
+    public void generateChunk()
     {
         created = true;
         float offX = (chunkObject.transform.position.x - 7.5f);
         float offZ = (chunkObject.transform.position.z - 7.5f) ;
 
-        for (int y = 0; y < size.y; y++) 
+        for (int y = 1; y < size.y-1; y++) 
         {
-            for (int x = 0; x < size.x; x++)
+            for (int x = 1; x < size.x-1; x++)
             {
-                for(int z = 0; z < size.z; z++)
+                for(int z = 1; z < size.z-1; z++)
                 {
-                    Debug.Log((int)(Mathf.PerlinNoise(10 * (x + offX), 10 * (z + offZ))) + 1);
+                    
 
                     if(x == 0 || z== 0 || x == 17 || z == 17)
                     {
-                        blocks[x, y, z] = controller.blocks[0];
+                        blocks[x, y, z] = new Block(0);
+                        
                     }
                     else if((int)(Mathf.PerlinNoise((x + offX)/16 , (z + offZ)/16 ) * 2) + 1 >= y)
                     {
                         int r = Random.Range(1, 3);
-                        blocks[x, y, z] = controller.blocks[r];
-                        blocks[x, y, z].GetComponent<Block>().textIndex = r-1;
+                        blocks[x, y, z] = new Block(r);
+                        
                         
 
                     }
                     else
                     {
-                        blocks[x, y, z] = controller.blocks[0];
+                        blocks[x, y, z] = new Block(0);
                     }
                 }
+                
             }
             
-            yield return null;
+            
         }
         GenerateMesh();
     }
@@ -110,9 +112,9 @@ public class ChunkController
                 for (int z = 1; z < size.z - 1; z++)
                 {
                     
-                    if (blocks[x, y, z] != controller.blocks[0])
+                    if (blocks[x, y, z].textIndex != 0)
                         for (int o = 0; o < 6; o++)
-                            if (blocks[x + Faces[o, 4], y + Faces[o, 5], z + Faces[o, 6]] == controller.blocks[0])
+                            if (blocks[x + Faces[o, 4], y + Faces[o, 5], z + Faces[o, 6]] == null || blocks[x + Faces[o, 4], y + Faces[o, 5], z + Faces[o, 6]].textIndex == 0)
                                 AddQuad(o, Verticies.Count);
 
                     void AddQuad(int facenum, int v)
@@ -123,7 +125,7 @@ public class ChunkController
 
                         // Add uvs
                         Vector2 bottomleft = new Vector2(Faces[facenum, 7], Faces[facenum, 8]) /( 2f * (controller.blocks.Length - 1));
-                        bottomleft.x += blocks[x,y,z].GetComponent<Block>().textIndex / (controller.blocks.Length - 1);
+                        bottomleft.x += blocks[x,y,z].textIndex / (controller.blocks.Length - 1);
                         uv.AddRange(new List<Vector2>() { bottomleft + new Vector2(0, 0.5f / (controller.blocks.Length-1)), bottomleft + new Vector2(0.5f/ (controller.blocks.Length - 1), 0.5f / (controller.blocks.Length - 1)), bottomleft + new Vector2(0.5f / (controller.blocks.Length - 1), 0), bottomleft });
                     }
 

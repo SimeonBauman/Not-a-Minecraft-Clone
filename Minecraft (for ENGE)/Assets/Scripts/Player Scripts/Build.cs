@@ -37,8 +37,8 @@ public class Build : MonoBehaviour
                 p = new Vector3(Mathf.RoundToInt(p.x), Mathf.RoundToInt(p.y), Mathf.RoundToInt(p.z));
                 
                 ChunkController c = controller.GetChunkFromVector3(g.transform.position);
-                
-                c.blocks[(int)p.x, (int)p.y, (int)p.z] = controller.blocks[0];
+
+                c.blocks[(int)p.x, (int)p.y, (int)p.z] = new Block(0);
                 c.GenerateMesh();
                 
                 
@@ -55,7 +55,7 @@ public class Build : MonoBehaviour
 
                 ChunkController c = controller.GetChunkFromVector3(g.transform.position);
 
-                c.blocks[(int)p.x, (int)p.y, (int)p.z] = controller.GetComponent<PlaceChunks>().blocks[1];
+                c.blocks[(int)p.x, (int)p.y, (int)p.z] = new Block(1);
                 c.GenerateMesh();
 
             }

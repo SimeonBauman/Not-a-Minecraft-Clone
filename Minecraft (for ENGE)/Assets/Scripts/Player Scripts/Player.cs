@@ -13,7 +13,7 @@ public class Player
 
         p = new GameObject("player");
      
-        p.AddComponent<Build>().controller = controller;
+        
        
         p.AddComponent<PlayerMove>();
         p.AddComponent<CharacterController>();

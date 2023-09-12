@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlaceChunks : MonoBehaviour
 {
-    private int chunkNum = 10;
+    private int chunkNum = 100;
 
  
 
@@ -31,10 +31,12 @@ public class PlaceChunks : MonoBehaviour
         
         chunks = new ChunkController[chunkNum,chunkNum];
         timers= new float[chunkNum * chunkNum];
-        place();
-        lastPlayerChunk = GetChunkFromVector3(new Vector3(80, 50, 80));
+        Vector3 spawnPoint = new Vector3(Random.Range(1, chunkNum * 16), 10, Random.Range(1, chunkNum * 16));
+        place(new Vector2(spawnPoint.x,spawnPoint.z));
         
-        player = new Player(new Vector3(80, 50, 80), this).p;
+        
+        player = new Player(spawnPoint, this).p;
+
         refreshRenderDist();
 
     }
@@ -55,44 +57,55 @@ public class PlaceChunks : MonoBehaviour
             for (int j = 0; j < chunkNum; j++)
             {
                 Vector2 pos = new Vector2(i * 16, j * 16);
-
+                
                 if (Vector2.Distance(playerPos, pos) / 16 < 3)
                 {
+                    if(chunks[i,j] == null) createChunk(i,j);
                     if (!chunks[i, j].chunkObject.activeSelf) chunks[i, j].chunkObject.SetActive(true);
-                    if (!chunks[i, j].created) StartCoroutine( chunks[i, j].generateChunk());
+                    
                 }
                 else
                 {
-                    if (chunks[i, j].chunkObject.activeSelf) chunks[i, j].chunkObject.SetActive(false);
+                    if (chunks[i,j] != null && chunks[i, j].chunkObject.activeSelf) chunks[i, j].chunkObject.SetActive(false);
                 }
             }
         }
     }
 
-    private void place()
+    private void place(Vector2 dist)
     {
         int startx = 0;
         int startz = 0 ;
 
-        int num = 0;
+     
 
         for(int i = 0; i < chunkNum; i++)
         {
             for(int j = 0; j < chunkNum; j++)
             {
-                ChunkController c = new ChunkController(new Vector3(startx + (i*16),0,startz + (j*16)),this);
-                chunks[i,j] = c;
-                c.controller = this;
-                c.player = player;
-                c.index = num;
-                
-                num++;
+                if (Vector2.Distance(dist, new Vector2(startx + (i * 16), startz + (j * 16))) / 16 < 3)
+                {
+
+
+                    createChunk(i,j);
+
+                   
+                }
             }
         }
         
+        
     }
 
-   
+   void createChunk(int i, int j)
+    {
+        ChunkController c = new ChunkController(new Vector3((i * 16), 0,(j * 16)), this);
+        chunks[i, j] = c;
+        c.controller = this;
+        c.player = player;
+        c.index = i*16 + j;
+        c.generateChunk();
+    }
 
     public ChunkController GetChunkFromVector3(Vector3 pos)
     {
