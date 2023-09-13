@@ -92,12 +92,12 @@ public class ChunkController
 
 
         }
-        GenerateMesh();
+        GenerateMesh(true);
     }
 
 
 
-    public void GenerateMesh(bool onBreak = false)
+    public void GenerateMesh(bool onCreate = false, int i = -1, int j = -1, int k = -1)
     {
 
         float at = Time.realtimeSinceStartup;
@@ -106,6 +106,8 @@ public class ChunkController
         List<Vector2> uv = new List<Vector2>();
 
         ChunkController chunktoRegen = null;
+
+        Vector3 p = new Vector3(i, j, k);
 
         for (int x = 0; x < size.x; x++)
             for (int y = 1; y < size.y - 1; y++)
@@ -118,21 +120,23 @@ public class ChunkController
                         {
 
                             Vector3 b = new Vector3(x + Faces[o, 4] - 7.5f, y + Faces[o, 5], z + Faces[o, 6] - 7.5f);
-
+                            Vector3 b2 = new Vector3((x + Faces[o, 4] + 16) % 16, y + Faces[o, 5], (z + Faces[o, 6] + 16) %16);
                             b += chunkObject.transform.position;
+
 
                             if (x + Faces[o, 4] == -1 || x + Faces[o, 4] == 16 || z + Faces[o, 6] == -1 || z + Faces[o, 6] == 16 )
                             {
-                                if (Mathf.PerlinNoise((b.x) / biomeStepth, (b.z) / biomeStepth) * biomeHeight + 3 < b.y)
+                                if (onCreate && Mathf.PerlinNoise((b.x) / biomeStepth, (b.z) / biomeStepth) * biomeHeight + 3 < b.y)
                                 {
 
-                                    if (onBreak)
-                                    {
-                                        chunktoRegen = ( controller.GetChunkFromVector3(b));
-                                        
-                                        
-                                    }
+                                    AddQuad(o, Verticies.Count);
+                                    
 
+                                }
+                                else if(new Vector3(x,y,z) == p && controller.GetChunkFromVector3(b).blocks[Mathf.RoundToInt(b2.x), Mathf.RoundToInt(b2.y), Mathf.RoundToInt(b2.z)].textIndex == 0)
+                                {
+                                    Debug.Log(p);
+                                    chunktoRegen = controller.GetChunkFromVector3(b);
                                     AddQuad(o, Verticies.Count);
                                 }
 

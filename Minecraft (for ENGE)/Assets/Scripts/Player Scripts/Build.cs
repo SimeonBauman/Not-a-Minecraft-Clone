@@ -39,11 +39,11 @@ public class Build : MonoBehaviour
                 ChunkController c = controller.GetChunkFromVector3(g.transform.position);
 
                 c.blocks[(int)p.x, (int)p.y, (int)p.z] = new Block(0);
-                c.GenerateMesh(true);
-                
-                
-                
-                
+                c.GenerateMesh(false, (int)p.x, (int)p.y, (int)p.z);
+
+
+
+
             }
             else if (Input.GetButtonDown("Fire2"))
             {
@@ -56,7 +56,7 @@ public class Build : MonoBehaviour
                 ChunkController c = controller.GetChunkFromVector3(g.transform.position);
 
                 c.blocks[(int)p.x, (int)p.y, (int)p.z] = new Block(1);
-                c.GenerateMesh(true);
+                c.GenerateMesh(false,(int)p.x, (int)p.y, (int)p.z);
 
             }
         }
