@@ -31,7 +31,7 @@ public class PlaceChunks : MonoBehaviour
         
         chunks = new ChunkController[chunkNum,chunkNum];
         timers= new float[chunkNum * chunkNum];
-        Vector3 spawnPoint = new Vector3(Random.Range(1, chunkNum * 16), 10, Random.Range(1, chunkNum * 16));
+        Vector3 spawnPoint = new Vector3(Random.Range(1, chunkNum * 16), 124, Random.Range(1, chunkNum * 16));
         place(new Vector2(spawnPoint.x,spawnPoint.z));
         
         
@@ -58,7 +58,7 @@ public class PlaceChunks : MonoBehaviour
             {
                 Vector2 pos = new Vector2(i * 16, j * 16);
                 
-                if (Vector2.Distance(playerPos, pos) / 16 < 3)
+                if (Vector2.Distance(playerPos, pos) / 16 < 12)
                 {
                     if(chunks[i,j] == null) createChunk(i,j);
                     if (!chunks[i, j].chunkObject.activeSelf) chunks[i, j].chunkObject.SetActive(true);

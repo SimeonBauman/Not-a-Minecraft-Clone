@@ -22,7 +22,10 @@ public class ChunkController
     MeshCollider meshCollider;
     MeshFilter meshFilter;
 
-    Vector3 size = new Vector3(18, 20, 18);
+    public int biomeStepth = 60;//the lower the Stepth the steeper the terrain is
+    public int biomeHeight = 20;//the higher the height the higher the mountains will peak at
+
+    Vector3 size = new Vector3(18, 124, 18);
 
     Vector3[] VertPos = new Vector3[8]{
                         new Vector3(-1, 1, -1), new Vector3(-1, 1, 1),
@@ -76,7 +79,7 @@ public class ChunkController
                         blocks[x, y, z] = new Block(0);
                         
                     }
-                    else if((int)(Mathf.PerlinNoise((x + offX)/16 , (z + offZ)/16 ) * 2) + 1 >= y)
+                    else if ((Mathf.PerlinNoise((x + offX) / biomeStepth, (z + offZ) / biomeStepth) * biomeHeight) + 3 >= y)
                     {
                         int r = Random.Range(1, 3);
                         blocks[x, y, z] = new Block(r);
