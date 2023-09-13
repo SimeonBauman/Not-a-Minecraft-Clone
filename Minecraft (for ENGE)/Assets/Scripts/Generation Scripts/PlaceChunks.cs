@@ -31,7 +31,7 @@ public class PlaceChunks : MonoBehaviour
         
         chunks = new ChunkController[chunkNum,chunkNum];
         timers= new float[chunkNum * chunkNum];
-        Vector3 spawnPoint = new Vector3(Random.Range(1, chunkNum * 16), 124, Random.Range(1, chunkNum * 16));
+        Vector3 spawnPoint = new Vector3(Random.Range(1, chunkNum * 16), 5000, Random.Range(1, chunkNum * 16));
         place(new Vector2(spawnPoint.x,spawnPoint.z));
         
         
@@ -43,10 +43,15 @@ public class PlaceChunks : MonoBehaviour
 
     private void Update()
     {
-       /* if(lastPlayerChunk != GetChunkFromVector3(player.transform.position)){
-            refreshRenderDist();
-            lastPlayerChunk = GetChunkFromVector3(player.transform.position);
-        }*/
+        if(lastPlayerChunk != null)
+        {
+            if (lastPlayerChunk != GetChunkFromVector3(player.transform.position))
+            {
+                refreshRenderDist();
+                
+            }
+        }
+        
     }
 
     void refreshRenderDist()
@@ -70,6 +75,7 @@ public class PlaceChunks : MonoBehaviour
                 }
             }
         }
+        lastPlayerChunk = GetChunkFromVector3(player.transform.position);
     }
 
     private void place(Vector2 dist)
@@ -83,7 +89,7 @@ public class PlaceChunks : MonoBehaviour
         {
             for(int j = 0; j < chunkNum; j++)
             {
-                if (Vector2.Distance(dist, new Vector2(startx + (i * 16), startz + (j * 16))) / 16 < 3)
+                if (Vector2.Distance(dist, new Vector2(startx + (i * 16), startz + (j * 16))) / 16 < 12)
                 {
 
 
@@ -103,8 +109,9 @@ public class PlaceChunks : MonoBehaviour
         chunks[i, j] = c;
         c.controller = this;
         c.player = player;
-        c.index = i*16 + j;
-        c.generateChunk();
+        c.IPOS = i;
+        c.JPOS = j;
+        StartCoroutine( c.generateChunk());
     }
 
     public ChunkController GetChunkFromVector3(Vector3 pos)

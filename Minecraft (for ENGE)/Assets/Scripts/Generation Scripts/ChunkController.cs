@@ -8,7 +8,8 @@ public class ChunkController
     public PlaceChunks controller;
     public GameObject player;
     public float time;
-    public int index;
+    public int IPOS;
+    public int JPOS;
 
     [SerializeField]
     public Block[,,] blocks;
@@ -60,7 +61,7 @@ public class ChunkController
 
 
 
-    public void generateChunk()
+    public IEnumerator generateChunk()
     {
         created = true;
         float offX = (chunkObject.transform.position.x - 7.5f);
@@ -74,7 +75,7 @@ public class ChunkController
                 {
 
 
-                    if ((Mathf.PerlinNoise((x + offX) / biomeStepth, (z + offZ) / biomeStepth) * biomeHeight) + 3 >= y)
+                    if ((Mathf.PerlinNoise((x + offX) / biomeStepth, (z + offZ) / biomeStepth) * biomeHeight) + 50 >= y)
                     {
                         int r = Random.Range(1, 3);
                         blocks[x, y, z] = new Block(r);
@@ -87,6 +88,7 @@ public class ChunkController
                         blocks[x, y, z] = new Block(0);
                     }
                 }
+                yield return null;
 
             }
 
@@ -97,7 +99,7 @@ public class ChunkController
 
 
 
-    public void GenerateMesh(bool onCreate = false, int i = -1, int j = -1, int k = -1)
+    public void GenerateMesh(bool onCreate = false, bool onBuild = false)
     {
 
         float at = Time.realtimeSinceStartup;
@@ -107,7 +109,7 @@ public class ChunkController
 
         ChunkController chunktoRegen = null;
 
-        Vector3 p = new Vector3(i, j, k);
+        
 
         for (int x = 0; x < size.x; x++)
             for (int y = 1; y < size.y - 1; y++)
@@ -120,25 +122,14 @@ public class ChunkController
                         {
 
                             Vector3 b = new Vector3(x + Faces[o, 4] - 7.5f, y + Faces[o, 5], z + Faces[o, 6] - 7.5f);
-                            Vector3 b2 = new Vector3((x + Faces[o, 4] + 16) % 16, y + Faces[o, 5], (z + Faces[o, 6] + 16) %16);
+                            Vector3 b2 = new Vector3(x + Faces[o, 4] , y, z + Faces[o, 6] );
+                            
                             b += chunkObject.transform.position;
 
 
                             if (x + Faces[o, 4] == -1 || x + Faces[o, 4] == 16 || z + Faces[o, 6] == -1 || z + Faces[o, 6] == 16 )
                             {
-                                if (onCreate && Mathf.PerlinNoise((b.x) / biomeStepth, (b.z) / biomeStepth) * biomeHeight + 3 < b.y)
-                                {
-
-                                    AddQuad(o, Verticies.Count);
-                                    
-
-                                }
-                                else if(new Vector3(x,y,z) == p && controller.GetChunkFromVector3(b).blocks[Mathf.RoundToInt(b2.x), Mathf.RoundToInt(b2.y), Mathf.RoundToInt(b2.z)].textIndex == 0)
-                                {
-                                    Debug.Log(p);
-                                    chunktoRegen = controller.GetChunkFromVector3(b);
-                                    AddQuad(o, Verticies.Count);
-                                }
+                                AddQuad(o, Verticies.Count);
 
                             }
                             else if (blocks[x + Faces[o, 4], y + Faces[o, 5], z + Faces[o, 6]] == null || blocks[x + Faces[o, 4], y + Faces[o, 5], z + Faces[o, 6]].textIndex == 0)
@@ -195,10 +186,7 @@ public class ChunkController
             triangles = Triangles.ToArray(),
             uv = uv.ToArray()
         };
-        if(chunktoRegen != null)
-        {
-            chunktoRegen.GenerateMesh();
-        }
+        
         
 
     }
