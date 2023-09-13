@@ -43,10 +43,10 @@ public class PlaceChunks : MonoBehaviour
 
     private void Update()
     {
-        if(lastPlayerChunk != GetChunkFromVector3(player.transform.position)){
+       /* if(lastPlayerChunk != GetChunkFromVector3(player.transform.position)){
             refreshRenderDist();
             lastPlayerChunk = GetChunkFromVector3(player.transform.position);
-        }
+        }*/
     }
 
     void refreshRenderDist()
@@ -112,7 +112,7 @@ public class PlaceChunks : MonoBehaviour
 
         int x = Mathf.FloorToInt(pos.x / 16);
         int z = Mathf.FloorToInt(pos.z / 16);
-        return chunks[x, z];
+        return chunks[x,z];
 
     }
 }
