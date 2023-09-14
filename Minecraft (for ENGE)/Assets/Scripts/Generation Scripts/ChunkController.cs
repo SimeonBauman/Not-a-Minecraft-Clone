@@ -8,8 +8,7 @@ public class ChunkController
     public PlaceChunks controller;
     public GameObject player;
     public float time;
-    public int IPOS;
-    public int JPOS;
+    public int index;
 
     [SerializeField]
     public Block[,,] blocks;
@@ -26,7 +25,7 @@ public class ChunkController
     public int biomeStepth = 60;//the lower the Stepth the steeper the terrain is
     public int biomeHeight = 20;//the higher the height the higher the mountains will peak at
 
-    Vector3 size = new Vector3(16, 124, 16);
+    Vector3 size = new Vector3(18, 124, 18);
 
     Vector3[] VertPos = new Vector3[8]{
                         new Vector3(-1, 1, -1), new Vector3(-1, 1, 1),
@@ -61,21 +60,26 @@ public class ChunkController
 
 
 
-    public IEnumerator generateChunk()
+    public void generateChunk()
     {
         created = true;
         float offX = (chunkObject.transform.position.x - 7.5f);
         float offZ = (chunkObject.transform.position.z - 7.5f);
 
-        for (int y = 0; y < size.y; y++)
+        for (int y = 1; y < size.y - 1; y++)
         {
-            for (int x = 0; x < size.x; x++)
+            for (int x = 1; x < size.x - 1; x++)
             {
-                for (int z = 0; z < size.z; z++)
+                for (int z = 1; z < size.z - 1; z++)
                 {
 
 
-                    if ((Mathf.PerlinNoise((x + offX) / biomeStepth, (z + offZ) / biomeStepth) * biomeHeight) + 50 >= y)
+                    if (x == 0 || z == 0 || x == 17 || z == 17)
+                    {
+                        blocks[x, y, z] = new Block(0);
+
+                    }
+                    else if ((Mathf.PerlinNoise((x + offX) / biomeStepth, (z + offZ) / biomeStepth) * biomeHeight) + 50 >= y)
                     {
                         int r = Random.Range(1, 3);
                         blocks[x, y, z] = new Block(r);
@@ -88,18 +92,17 @@ public class ChunkController
                         blocks[x, y, z] = new Block(0);
                     }
                 }
-                yield return null;
 
             }
 
 
         }
-        GenerateMesh(true);
+        GenerateMesh();
     }
 
 
 
-    public void GenerateMesh(bool onCreate = false, bool onBuild = false)
+    public void GenerateMesh()
     {
 
         float at = Time.realtimeSinceStartup;
@@ -107,43 +110,15 @@ public class ChunkController
         List<Vector3> Verticies = new List<Vector3>();
         List<Vector2> uv = new List<Vector2>();
 
-        ChunkController chunktoRegen = null;
-
-        
-
-        for (int x = 0; x < size.x; x++)
+        for (int x = 1; x < size.x - 1; x++)
             for (int y = 1; y < size.y - 1; y++)
-                for (int z = 0; z < size.z; z++)
+                for (int z = 1; z < size.z - 1; z++)
                 {
 
                     if (blocks[x, y, z].textIndex != 0)
-                    {
                         for (int o = 0; o < 6; o++)
-                        {
-
-                            Vector3 b = new Vector3(x + Faces[o, 4] - 7.5f, y + Faces[o, 5], z + Faces[o, 6] - 7.5f);
-                            Vector3 b2 = new Vector3(x + Faces[o, 4] , y, z + Faces[o, 6] );
-                            
-                            b += chunkObject.transform.position;
-
-
-                            if (x + Faces[o, 4] == -1 || x + Faces[o, 4] == 16 || z + Faces[o, 6] == -1 || z + Faces[o, 6] == 16 )
-                            {
+                            if (blocks[x + Faces[o, 4], y + Faces[o, 5], z + Faces[o, 6]] == null || blocks[x + Faces[o, 4], y + Faces[o, 5], z + Faces[o, 6]].textIndex == 0)
                                 AddQuad(o, Verticies.Count);
-
-                            }
-                            else if (blocks[x + Faces[o, 4], y + Faces[o, 5], z + Faces[o, 6]] == null || blocks[x + Faces[o, 4], y + Faces[o, 5], z + Faces[o, 6]].textIndex == 0)
-                            {
-                                AddQuad(o, Verticies.Count);
-                            }
-
-
-
-                        }
-
-                    }
-
-
 
                     void AddQuad(int facenum, int v)
                     {
@@ -156,23 +131,21 @@ public class ChunkController
                         bottomleft.x += blocks[x, y, z].textIndex / (controller.blocks.Length - 1);
                         uv.AddRange(new List<Vector2>() { bottomleft + new Vector2(0, 0.5f / (controller.blocks.Length - 1)), bottomleft + new Vector2(0.5f / (controller.blocks.Length - 1), 0.5f / (controller.blocks.Length - 1)), bottomleft + new Vector2(0.5f / (controller.blocks.Length - 1), 0), bottomleft });
                     }
+
+                    /*float inde()
+                    {
+
+                        for(int i = 0; i < controller.blocks.Length; i++) 
+                        {
+                            if (controller.blocks[i].Equals( blocks[x, y, z]))
+                            {
+                                Debug.Log("Matched" + i);
+                                return i - 1 ;
+                            }
+                        }
+                        return 0;
+                    }*/
                 }
-
-        /*float inde()
-        {
-
-            for(int i = 0; i < controller.blocks.Length; i++) 
-            {
-                if (controller.blocks[i].Equals( blocks[x, y, z]))
-                {
-                    Debug.Log("Matched" + i);
-                    return i - 1 ;
-                }
-            }
-            return 0;
-        }*/
-    
-
 
         meshFilter.mesh = new Mesh()
         {
@@ -186,8 +159,6 @@ public class ChunkController
             triangles = Triangles.ToArray(),
             uv = uv.ToArray()
         };
-        
-        
 
     }
 }
