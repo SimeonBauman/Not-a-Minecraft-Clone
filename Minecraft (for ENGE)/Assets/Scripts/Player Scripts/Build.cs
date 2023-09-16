@@ -41,7 +41,7 @@ public class Build : MonoBehaviour
                 c.blocks[(int)p.x, (int)p.y, (int)p.z] = new Block(0);
                 c.GenerateMesh();
 
-
+                checkForChunkEdge(p,c);
 
 
             }
@@ -50,10 +50,11 @@ public class Build : MonoBehaviour
                
                 
                 p += transform.forward * -.01f;
-                p -= g.transform.position;
+                
                 p = new Vector3(Mathf.RoundToInt(p.x), Mathf.RoundToInt(p.y), Mathf.RoundToInt(p.z));
-
-                ChunkController c = controller.GetChunkFromVector3(g.transform.position);
+                ChunkController c = controller.GetChunkFromVector3(p);
+                g = c.chunkObject;
+                p -= g.transform.position;
 
                 c.blocks[(int)p.x, (int)p.y, (int)p.z] = new Block(1);
                 c.GenerateMesh();
@@ -75,5 +76,28 @@ public class Build : MonoBehaviour
         highLighter.transform.position = p;
     }
 
-   
+    void checkForChunkEdge(Vector3 p, ChunkController n)
+    {
+       
+        
+        
+        if (p.x == 0 || p.x == 15)
+        {
+            ChunkController c = controller.chunks[n.index[0] + ((int)p.x % 13)-1, n.index[1]];
+           
+            
+            c.GenerateMesh();
+            
+
+        }
+         if (p.z == 0 || p.z == 16)
+        {
+            ChunkController c = controller.chunks[n.index[0], n.index[1] + ((int)p.z % 13)-1];
+           
+            c.GenerateMesh();
+            
+
+        }
+
+    }
 }

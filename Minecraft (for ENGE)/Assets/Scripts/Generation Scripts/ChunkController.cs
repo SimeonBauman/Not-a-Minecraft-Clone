@@ -8,9 +8,9 @@ public class ChunkController
     public PlaceChunks controller;
     public GameObject player;
     public float time;
-    public int index;
+    public int[] index;
 
-    [SerializeField]
+
     public Block[,,] blocks;
     bool exists = false;
 
@@ -25,7 +25,7 @@ public class ChunkController
     public int biomeStepth = 60;//the lower the Stepth the steeper the terrain is
     public int biomeHeight = 20;//the higher the height the higher the mountains will peak at
 
-    Vector3 size = new Vector3(18, 124, 18);
+    Vector3 size = new Vector3(16, 124, 16);
 
     Vector3[] VertPos = new Vector3[8]{
                         new Vector3(-1, 1, -1), new Vector3(-1, 1, 1),
@@ -46,6 +46,7 @@ public class ChunkController
 
     public ChunkController(Vector3 pos, PlaceChunks controller)
     {
+
         this.controller = controller;
         chunkObject = new GameObject();
         meshFilter = chunkObject.AddComponent<MeshFilter>();
@@ -60,65 +61,65 @@ public class ChunkController
 
 
 
-    public  IEnumerator generateChunk(bool onCreate = false)
+    public IEnumerator generateChunk(bool onCreate = false)
     {
-        
+
         float offX = (chunkObject.transform.position.x - 7.5f);
         float offZ = (chunkObject.transform.position.z - 7.5f);
 
         int airBlocks = 0;
-
-        for (int y = 1; y < size.y - 1; y++)
+        bool finish = false;
+        for (int y = 0; y < size.y - 0; y++)
         {
-            for (int x = 1; x < size.x - 1; x++)
+            for (int x = 0; x < size.x - 0; x++)
             {
-                for (int z = 1; z < size.z - 1; z++)
+                for (int z = 0; z < size.z - 0; z++)
                 {
 
-
-                    if (x == 0 || z == 0 || x == 17 || z == 17)
+                    if (finish)
                     {
                         blocks[x, y, z] = new Block(0);
-
-                    }
-                    else if ((Mathf.PerlinNoise((x + offX) / biomeStepth, (z + offZ) / biomeStepth) * biomeHeight) + 50 >= y)
-                    {
-                        int r = Random.Range(1, 3);
-                        blocks[x, y, z] = new Block(r);
-
-
-
                     }
                     else
                     {
-                        blocks[x, y, z] = new Block(0);
-                        airBlocks++;
+                        if ((Mathf.PerlinNoise((x + offX) / biomeStepth, (z + offZ) / biomeStepth) * biomeHeight) + 50 >= y)
+                        {
+                            int r = Random.Range(1, 3);
+                            blocks[x, y, z] = new Block(r);
+
+
+
+                        }
+                        else
+                        {
+                            blocks[x, y, z] = new Block(0);
+                            airBlocks++;
+                        }
                     }
-                    if (!onCreate)
-                        yield return null;
+
                 }
-                
+
 
             }
-
+            if (!onCreate)
+                yield return null;
 
             if (airBlocks == 256) {
-                
-                y = (int) size.y + 1;
-                this.chunkObject.SetActive(false);
+
+               finish = true;
+
             }
             else airBlocks = 0;
 
         }
 
-        this.chunkObject.SetActive(false);
-
+       
 
     }
 
 
 
-    public void GenerateMesh()
+    public void GenerateMesh(bool onCreate = false)
     {
         created = true;
         float at = Time.realtimeSinceStartup;
@@ -126,15 +127,57 @@ public class ChunkController
         List<Vector3> Verticies = new List<Vector3>();
         List<Vector2> uv = new List<Vector2>();
 
-        for (int x = 1; x < size.x - 1; x++)
-            for (int y = 1; y < size.y - 1; y++)
-                for (int z = 1; z < size.z - 1; z++)
+        for (int x = 0; x < size.x; x++) { 
+            for (int y = 1; y < size.y - 1; y++) { 
+                for (int z = 0; z < size.z; z++)
                 {
 
-                    if (blocks[x,y,z] != null && blocks[x, y, z].textIndex != 0)
+                    if (blocks[x, y, z] != null && blocks[x, y, z].textIndex != 0)
                         for (int o = 0; o < 6; o++)
-                            if (blocks[x + Faces[o, 4], y + Faces[o, 5], z + Faces[o, 6]] == null || blocks[x + Faces[o, 4], y + Faces[o, 5], z + Faces[o, 6]].textIndex == 0)
+                        {
+                            int nX = x + Faces[o, 4];
+                            int nZ = z + Faces[o, 6];
+                            if ((nX == -1 || nX == 16) && (nZ == -1 || nZ == 16))
+                            {
+                                ChunkController c = controller.chunks[index[0] + (nX % 15), index[1] + (nZ % 15)];
+                                nX += 16;
+                                nX %= 16;
+                                nZ += 16;
+                                nZ %= 16;
+                                if(c!= null && c.blocks[nX, y, nZ] != null)
+                                    if (c.blocks[nX, y, nZ].textIndex == 0)
+                                        AddQuad(o, Verticies.Count);
+                                
+                            }
+                            else if (nX == -1 || nX == 16)
+                            {
+                                ChunkController c = controller.chunks[index[0] + (nX % 15), index[1]];
+                                nX += 16;
+                                nX %= 16;
+                                if (c != null && c.blocks[nX, y, z] != null)
+                                    if ( c.blocks[nX, y, z].textIndex == 0)
+                                
+                                        AddQuad(o, Verticies.Count);
+                                
+
+                            }
+                            else if (nZ == -1 || nZ == 16)
+                            {
+                                ChunkController c = controller.chunks[index[0], index[1] + (nZ % 15)];
+                                nZ += 16;
+                                nZ %= 16;
+                                if (c != null && c.blocks[x, y, nZ]!=null)
+                                    if ( c.blocks[x, y, nZ].textIndex == 0)
+                                    
+                                        AddQuad(o, Verticies.Count);
+                                
+
+                            }
+                            else if (blocks[nX, y + Faces[o, 5], nZ] == null || blocks[nX, y + Faces[o, 5], nZ].textIndex == 0)
+                            {
                                 AddQuad(o, Verticies.Count);
+                            }
+                        }
 
                     void AddQuad(int facenum, int v)
                     {
@@ -148,20 +191,16 @@ public class ChunkController
                         uv.AddRange(new List<Vector2>() { bottomleft + new Vector2(0, 0.5f / (controller.blocks.Length - 1)), bottomleft + new Vector2(0.5f / (controller.blocks.Length - 1), 0.5f / (controller.blocks.Length - 1)), bottomleft + new Vector2(0.5f / (controller.blocks.Length - 1), 0), bottomleft });
                     }
 
-                    /*float inde()
-                    {
-
-                        for(int i = 0; i < controller.blocks.Length; i++) 
-                        {
-                            if (controller.blocks[i].Equals( blocks[x, y, z]))
-                            {
-                                Debug.Log("Matched" + i);
-                                return i - 1 ;
-                            }
-                        }
-                        return 0;
-                    }*/
+                    
+                    
                 }
+                
+                
+            }
+            
+
+        }
+        
 
         meshFilter.mesh = new Mesh()
         {
@@ -176,5 +215,37 @@ public class ChunkController
             uv = uv.ToArray()
         };
 
+        if (onCreate)
+        {
+            resetNeighbors();
+        }
+
+    }
+
+
+    void resetNeighbors()
+    {
+        for(int i = 0; i< 4; i++)
+        {
+            if(i%2 == 0)
+            {
+                int num = 1-(i%2);
+                if (index[0] + num < controller.chunkNum-1 && index[0] + num > -1)
+                {
+                    if(controller.chunks[index[0] + num, index[1]] != null)
+                        controller.chunks[index[0] + num, index[1]].GenerateMesh();
+                }
+
+            }
+            else
+            {
+                int num = i - 2;
+                if (index[1] + num < controller.chunkNum - 1 && index[1] + num > -1)
+                {
+                    if (controller.chunks[index[0], index[1] + num] != null)
+                        controller.chunks[index[0], index[1] + num].GenerateMesh();
+                }
+            }
+        }
     }
 }

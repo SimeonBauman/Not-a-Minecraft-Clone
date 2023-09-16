@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlaceChunks : MonoBehaviour
 {
-    private int chunkNum = 100;
+    public int chunkNum = 100;
 
  
 
@@ -27,6 +27,8 @@ public class PlaceChunks : MonoBehaviour
 
     float renderDist = 5;
 
+    float sTime;
+
     void Start()
     {
        
@@ -35,19 +37,25 @@ public class PlaceChunks : MonoBehaviour
         
         chunks = new ChunkController[chunkNum,chunkNum];
         timers= new float[chunkNum * chunkNum];
-        Vector3 spawnPoint = new Vector3(Random.Range(1, chunkNum * 16), 100, Random.Range(1, chunkNum * 16));
+        //Vector3 spawnPoint = new Vector3(Random.Range(1, chunkNum * 16), 100, Random.Range(1, chunkNum * 16));
+
+        Vector3 spawnPoint = new Vector3(800, 100, 800);
         place(new Vector2(spawnPoint.x,spawnPoint.z));
         
         
         player = new Player(spawnPoint, this).p;
 
         refreshRenderDist();
-        
+        sTime= Time.time;
 
     }
 
     private void Update()
     {
+        if(Time.frameCount > 100)
+        {
+            onStart = false;
+        }
         if(lastPlayerChunk != null)
         {
             if (lastPlayerChunk != GetChunkFromVector3(player.transform.position))
@@ -68,20 +76,21 @@ public class PlaceChunks : MonoBehaviour
             {
                 Vector2 pos = new Vector2(i * 16, j * 16);
                 float d = Vector2.Distance(playerPos, pos) / 16;
-                if (d < renderDist + 1 && chunks[i, j] == null)
+                if (d < renderDist + 2 && chunks[i, j] == null)
                 {
                     createChunk(i,j);
                     
                     
                 }
-                 if(d < renderDist && !chunks[i,j].created) 
+                else if(d < renderDist+1 && !chunks[i,j].created) 
                 {
                     
-                    chunks[i, j].GenerateMesh();
+                    chunks[i, j].GenerateMesh(onStart);
+                    chunks[i, j].chunkObject.SetActive(false);
                 }
-                 if(d < renderDist)
+                if(d < renderDist)
                 {
-                    if (!chunks[i, j].chunkObject.activeSelf) chunks[i, j].chunkObject.SetActive(true);
+                    chunks[i, j].chunkObject.SetActive(true);
                 }
                 else
                 {
@@ -123,7 +132,7 @@ public class PlaceChunks : MonoBehaviour
         chunks[i, j] = c;
         c.controller = this;
         c.player = player;
-        
+        c.index = new int[] {i, j };
         StartCoroutine( c.generateChunk(onStart));
     }
 
