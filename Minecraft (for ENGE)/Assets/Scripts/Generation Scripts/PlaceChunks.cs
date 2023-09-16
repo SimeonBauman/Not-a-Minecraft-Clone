@@ -85,7 +85,7 @@ public class PlaceChunks : MonoBehaviour
                 else if(d < renderDist+1 && !chunks[i,j].created) 
                 {
                     
-                    chunks[i, j].GenerateMesh(onStart);
+                    chunks[i, j].GenerateMesh(true);
                     chunks[i, j].chunkObject.SetActive(false);
                 }
                 if(d < renderDist)
