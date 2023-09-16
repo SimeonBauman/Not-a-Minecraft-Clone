@@ -60,11 +60,13 @@ public class ChunkController
 
 
 
-    public void generateChunk()
+    public  IEnumerator generateChunk(bool onCreate = false)
     {
-        created = true;
+        
         float offX = (chunkObject.transform.position.x - 7.5f);
         float offZ = (chunkObject.transform.position.z - 7.5f);
+
+        int airBlocks = 0;
 
         for (int y = 1; y < size.y - 1; y++)
         {
@@ -90,21 +92,35 @@ public class ChunkController
                     else
                     {
                         blocks[x, y, z] = new Block(0);
+                        airBlocks++;
                     }
+                    if (!onCreate)
+                        yield return null;
                 }
+                
 
             }
 
 
+            if (airBlocks == 256) {
+                
+                y = (int) size.y + 1;
+                this.chunkObject.SetActive(false);
+            }
+            else airBlocks = 0;
+
         }
-        GenerateMesh();
+
+        this.chunkObject.SetActive(false);
+
+
     }
 
 
 
     public void GenerateMesh()
     {
-
+        created = true;
         float at = Time.realtimeSinceStartup;
         List<int> Triangles = new List<int>();
         List<Vector3> Verticies = new List<Vector3>();
@@ -115,7 +131,7 @@ public class ChunkController
                 for (int z = 1; z < size.z - 1; z++)
                 {
 
-                    if (blocks[x, y, z].textIndex != 0)
+                    if (blocks[x,y,z] != null && blocks[x, y, z].textIndex != 0)
                         for (int o = 0; o < 6; o++)
                             if (blocks[x + Faces[o, 4], y + Faces[o, 5], z + Faces[o, 6]] == null || blocks[x + Faces[o, 4], y + Faces[o, 5], z + Faces[o, 6]].textIndex == 0)
                                 AddQuad(o, Verticies.Count);

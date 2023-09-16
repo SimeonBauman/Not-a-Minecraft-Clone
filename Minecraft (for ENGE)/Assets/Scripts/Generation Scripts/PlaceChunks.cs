@@ -21,7 +21,11 @@ public class PlaceChunks : MonoBehaviour
     public GameObject highlighter;
 
     ChunkController lastPlayerChunk;
-   
+
+
+    public bool onStart = true;
+
+    float renderDist = 5;
 
     void Start()
     {
@@ -38,6 +42,7 @@ public class PlaceChunks : MonoBehaviour
         player = new Player(spawnPoint, this).p;
 
         refreshRenderDist();
+        
 
     }
 
@@ -62,12 +67,21 @@ public class PlaceChunks : MonoBehaviour
             for (int j = 0; j < chunkNum; j++)
             {
                 Vector2 pos = new Vector2(i * 16, j * 16);
-                
-                if (Vector2.Distance(playerPos, pos) / 16 < 12)
+                float d = Vector2.Distance(playerPos, pos) / 16;
+                if (d < renderDist + 1 && chunks[i, j] == null)
                 {
-                    if(chunks[i,j] == null) createChunk(i,j);
-                    if (!chunks[i, j].chunkObject.activeSelf) chunks[i, j].chunkObject.SetActive(true);
+                    createChunk(i,j);
                     
+                    
+                }
+                 if(d < renderDist && !chunks[i,j].created) 
+                {
+                    
+                    chunks[i, j].GenerateMesh();
+                }
+                 if(d < renderDist)
+                {
+                    if (!chunks[i, j].chunkObject.activeSelf) chunks[i, j].chunkObject.SetActive(true);
                 }
                 else
                 {
@@ -110,7 +124,7 @@ public class PlaceChunks : MonoBehaviour
         c.controller = this;
         c.player = player;
         
-         c.generateChunk();
+        StartCoroutine( c.generateChunk(onStart));
     }
 
     public ChunkController GetChunkFromVector3(Vector3 pos)
