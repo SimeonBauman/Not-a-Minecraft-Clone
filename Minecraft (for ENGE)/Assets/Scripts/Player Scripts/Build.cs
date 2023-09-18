@@ -90,7 +90,7 @@ public class Build : MonoBehaviour
             
 
         }
-         if (p.z == 0 || p.z == 16)
+         if (p.z == 0 || p.z == 15)
         {
             ChunkController c = controller.chunks[n.index[0], n.index[1] + ((int)p.z % 13)-1];
            

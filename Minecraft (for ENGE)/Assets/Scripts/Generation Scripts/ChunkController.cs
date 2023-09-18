@@ -89,6 +89,7 @@ public class ChunkController
 
 
 
+
                         }
                         else
                         {
@@ -133,24 +134,26 @@ public class ChunkController
                 {
 
                     if (blocks[x, y, z] != null && blocks[x, y, z].textIndex != 0)
+                    {
+                        checkBlockUpdate(new int[] { x, y, z }, y + blocks[x, y + 1, z].textIndex);
                         for (int o = 0; o < 6; o++)
                         {
                             int nX = x + Faces[o, 4];
                             int nZ = z + Faces[o, 6];
 
-                           
 
-                             if ((nX == -1 || nX == 16) && (nZ == -1 || nZ == 16))
+
+                            if ((nX == -1 || nX == 16) && (nZ == -1 || nZ == 16))
                             {
                                 ChunkController c = controller.chunks[index[0] + (nX % 15), index[1] + (nZ % 15)];
                                 nX += 16;
                                 nX %= 16;
                                 nZ += 16;
                                 nZ %= 16;
-                                if(c!= null && c.blocks[nX, y, nZ] != null)
+                                if (c != null && c.blocks[nX, y, nZ] != null)
                                     if (c.blocks[nX, y, nZ].textIndex == 0)
                                         AddQuad(o, Verticies.Count);
-                                
+
                             }
                             else if (nX == -1 || nX == 16)
                             {
@@ -158,10 +161,10 @@ public class ChunkController
                                 nX += 16;
                                 nX %= 16;
                                 if (c != null && c.blocks[nX, y, z] != null)
-                                    if ( c.blocks[nX, y, z].textIndex == 0)
-                                
+                                    if (c.blocks[nX, y, z].textIndex == 0)
+
                                         AddQuad(o, Verticies.Count);
-                                
+
 
                             }
                             else if (nZ == -1 || nZ == 16)
@@ -169,11 +172,11 @@ public class ChunkController
                                 ChunkController c = controller.chunks[index[0], index[1] + (nZ % 15)];
                                 nZ += 16;
                                 nZ %= 16;
-                                if (c != null && c.blocks[x, y, nZ]!=null)
-                                    if ( c.blocks[x, y, nZ].textIndex == 0)
-                                    
+                                if (c != null && c.blocks[x, y, nZ] != null)
+                                    if (c.blocks[x, y, nZ].textIndex == 0)
+
                                         AddQuad(o, Verticies.Count);
-                                
+
 
                             }
                             else if (blocks[nX, y + Faces[o, 5], nZ] == null || blocks[nX, y + Faces[o, 5], nZ].textIndex == 0)
@@ -181,6 +184,7 @@ public class ChunkController
                                 AddQuad(o, Verticies.Count);
                             }
                         }
+                    }
 
                     void AddQuad(int facenum, int v)
                     {
@@ -237,6 +241,8 @@ public class ChunkController
                 {
 
                     if (blocks[x, y, z] != null && blocks[x, y, z].textIndex != 0)
+                    {
+                        checkBlockUpdate(new int[] { x, y, z }, y + blocks[x, y + 1, z].textIndex);
                         for (int o = 0; o < 6; o++)
                         {
                             int nX = x + Faces[o, 4];
@@ -246,7 +252,7 @@ public class ChunkController
 
                             b += chunkObject.transform.position;
 
-                            if ( ((nX == -1 || nX == 16 || nZ == -1 || nZ == 16)))
+                            if (((nX == -1 || nX == 16 || nZ == -1 || nZ == 16)))
                             {
 
                                 if (Mathf.PerlinNoise((b.x) / biomeStepth, (b.z) / biomeStepth) * biomeHeight + 50 < b.y)
@@ -255,13 +261,13 @@ public class ChunkController
                                 }
 
                             }
-                            
+
                             else if (blocks[nX, y + Faces[o, 5], nZ] == null || blocks[nX, y + Faces[o, 5], nZ].textIndex == 0)
                             {
                                 AddQuad(o, Verticies.Count);
                             }
                         }
-
+                    }
                     void AddQuad(int facenum, int v)
                     {
                         // Add Mesh
@@ -302,29 +308,17 @@ public class ChunkController
     }
 
 
-    void resetNeighbors()
+    void checkBlockUpdate(int[] b, float y)
+        
     {
-        for(int i = 0; i< 4; i++)
+        //Debug.Log(b[1] + " , " + y);
+        if(b[1] == y && blocks[b[0], b[1], b[2]].textIndex == 2 )
         {
-            if(i%2 == 0)
-            {
-                int num = 1-(i%2);
-                if (index[0] + num < controller.chunkNum-1 && index[0] + num > -1)
-                {
-                    if(controller.chunks[index[0] + num, index[1]] != null)
-                        controller.chunks[index[0] + num, index[1]].GenerateMesh();
-                }
-
-            }
-            else
-            {
-                int num = i - 2;
-                if (index[1] + num < controller.chunkNum - 1 && index[1] + num > -1)
-                {
-                    if (controller.chunks[index[0], index[1] + num] != null)
-                        controller.chunks[index[0], index[1] + num].GenerateMesh();
-                }
-            }
+            blocks[b[0], b[1], b[2]] = new Block(1);
+        }
+        else if(b[1] < y && blocks[b[0], b[1], b[2]].textIndex == 1)
+        {
+            blocks[b[0], b[1], b[2]] = new Block(2);
         }
     }
 }

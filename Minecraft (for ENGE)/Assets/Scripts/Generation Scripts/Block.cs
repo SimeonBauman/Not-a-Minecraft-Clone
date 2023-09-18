@@ -7,7 +7,7 @@ public class Block
     public float textIndex;
     public bool isEdge = false;
 
-    public Block(float ind)
+    public Block(int ind)
     {
         this.textIndex = ind;   
     }

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PlaceChunks : MonoBehaviour
 {
-    public int chunkNum = 100;
+    public int chunkNum = 10000;
 
  
 
@@ -26,7 +26,7 @@ public class PlaceChunks : MonoBehaviour
 
     public bool onStart = true;
 
-    float renderDist = 12;
+    float renderDist = 5;
 
     float sTime;
 
@@ -79,44 +79,48 @@ public class PlaceChunks : MonoBehaviour
 
     void refreshRenderDist()
     {
-        Vector2 playerPos = new Vector2(player.transform.position.x, player.transform.position.z);
-        for (int i = 0; i < chunkNum; i++)
+        Vector2 playerPos = new Vector2(player.transform.position.x, player.transform.position.z)/16;
+        for (int i = (int)(playerPos.x - (renderDist +3)); i < (int)(playerPos.x + (renderDist + 3)); i++)
         {
-            for (int j = 0; j < chunkNum; j++)
+            for (int j = (int)(playerPos.y - (renderDist + 3)); j < (int)(playerPos.y + (renderDist + 3)); j++)
             {
-                Vector2 pos = new Vector2(i * 16, j * 16);
-                float d = Vector2.Distance(playerPos, pos) / 16;
-                if (d < renderDist + 2 && chunks[i, j] == null)
+                if (i < 0) break;
+                if (j >= 0)
                 {
-                    createChunk(i, j);
+                    Vector2 pos = new Vector2(i, j);
+                    float d = Vector2.Distance(playerPos, pos);
+                    if (d < renderDist + 2 && chunks[i, j] == null)
+                    {
+                        createChunk(i, j);
 
 
-                }
-                else if (d < renderDist && !chunks[i, j].created)
-                {
-
-                    //chunks[i, j].GenerateMesh(true);
-                    if (chunksToGen.Count == 0)
+                    }
+                    else if (d < renderDist && !chunks[i, j].created)
                     {
 
-                        chunksToGen.Add(chunks[i, j]);
-                        StartCoroutine(startGen());
+                        //chunks[i, j].GenerateMesh(true);
+                        if (chunksToGen.Count == 0)
+                        {
+
+                            chunksToGen.Add(chunks[i, j]);
+                            StartCoroutine(startGen());
+                        }
+                        else
+                        {
+
+                            chunksToGen.Add(chunks[i, j]);
+                        }
+
+
+                    }
+                    if (d < renderDist)
+                    {
+                        chunks[i, j].chunkObject.SetActive(true);
                     }
                     else
                     {
-
-                        chunksToGen.Add(chunks[i, j]);
+                        if (chunks[i, j] != null && chunks[i, j].chunkObject.activeSelf) chunks[i, j].chunkObject.SetActive(false);
                     }
-
-
-                }
-                if(d < renderDist)
-                {
-                    chunks[i, j].chunkObject.SetActive(true);
-                }
-                else
-                {
-                    if (chunks[i,j] != null && chunks[i, j].chunkObject.activeSelf) chunks[i, j].chunkObject.SetActive(false);
                 }
                
             }
