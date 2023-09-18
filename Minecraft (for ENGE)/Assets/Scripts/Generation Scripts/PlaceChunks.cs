@@ -36,7 +36,7 @@ public class PlaceChunks : MonoBehaviour
      List<ChunkController> chunksToGen = new List<ChunkController>();
 
     public int listLenth;
-    Vector3 spawnPoint = new Vector3(800, 100, 800);
+    Vector3 spawnPoint;
     void Start()
     {
        
