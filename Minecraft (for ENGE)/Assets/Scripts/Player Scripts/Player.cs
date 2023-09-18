@@ -16,7 +16,7 @@ public class Player
         
        
         p.AddComponent<PlayerMove>();
-        p.AddComponent<CharacterController>();
+        p.AddComponent<CharacterController>().radius = .45f;
         cam = new GameObject("eyes");
         cam.AddComponent<PlayerLook>().player = p.transform;
         cam.AddComponent<Build>().controller = controller;
