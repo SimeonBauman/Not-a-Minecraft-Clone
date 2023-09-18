@@ -21,7 +21,7 @@ public class Player
         cam.AddComponent<PlayerLook>().player = p.transform;
         cam.AddComponent<Build>().controller = controller;
         cam.AddComponent<Camera>();
-        p.transform.position= pos;
+        p.transform.position = pos;
         pos.y = pos.y + .5f;
         cam.transform.position = pos;
         cam.transform.SetParent(p.transform);

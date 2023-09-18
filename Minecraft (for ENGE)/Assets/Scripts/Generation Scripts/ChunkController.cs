@@ -121,7 +121,7 @@ public class ChunkController
 
     public void GenerateMesh(bool onCreate = false)
     {
-        created = true;
+        
         float at = Time.realtimeSinceStartup;
         List<int> Triangles = new List<int>();
         List<Vector3> Verticies = new List<Vector3>();
@@ -137,7 +137,10 @@ public class ChunkController
                         {
                             int nX = x + Faces[o, 4];
                             int nZ = z + Faces[o, 6];
-                            if ((nX == -1 || nX == 16) && (nZ == -1 || nZ == 16))
+
+                           
+
+                             if ((nX == -1 || nX == 16) && (nZ == -1 || nZ == 16))
                             {
                                 ChunkController c = controller.chunks[index[0] + (nX % 15), index[1] + (nZ % 15)];
                                 nX += 16;
@@ -215,11 +218,87 @@ public class ChunkController
             uv = uv.ToArray()
         };
 
-        if (onCreate)
+      
+    }
+
+    public IEnumerator createMesh()
+    {
+        created = true;
+        float at = Time.realtimeSinceStartup;
+        List<int> Triangles = new List<int>();
+        List<Vector3> Verticies = new List<Vector3>();
+        List<Vector2> uv = new List<Vector2>();
+
+        for (int x = 0; x < size.x; x++)
         {
-            resetNeighbors();
+            for (int y = 1; y < size.y - 1; y++)
+            {
+                for (int z = 0; z < size.z; z++)
+                {
+
+                    if (blocks[x, y, z] != null && blocks[x, y, z].textIndex != 0)
+                        for (int o = 0; o < 6; o++)
+                        {
+                            int nX = x + Faces[o, 4];
+                            int nZ = z + Faces[o, 6];
+
+                            Vector3 b = new Vector3(x + Faces[o, 4] - 7.5f, y + Faces[o, 5], z + Faces[o, 6] - 7.5f);
+
+                            b += chunkObject.transform.position;
+
+                            if ( ((nX == -1 || nX == 16 || nZ == -1 || nZ == 16)))
+                            {
+
+                                if (Mathf.PerlinNoise((b.x) / biomeStepth, (b.z) / biomeStepth) * biomeHeight + 50 < b.y)
+                                {
+                                    AddQuad(o, Verticies.Count);
+                                }
+
+                            }
+                            
+                            else if (blocks[nX, y + Faces[o, 5], nZ] == null || blocks[nX, y + Faces[o, 5], nZ].textIndex == 0)
+                            {
+                                AddQuad(o, Verticies.Count);
+                            }
+                        }
+
+                    void AddQuad(int facenum, int v)
+                    {
+                        // Add Mesh
+                        for (int i = 0; i < 4; i++) Verticies.Add(new Vector3(x, y, z) + VertPos[Faces[facenum, i]] / 2f);
+                        Triangles.AddRange(new List<int>() { v, v + 1, v + 2, v, v + 2, v + 3 });
+
+                        // Add uvs
+                        Vector2 bottomleft = new Vector2(Faces[facenum, 7], Faces[facenum, 8]) / (2f * (controller.blocks.Length - 1));
+                        bottomleft.x += blocks[x, y, z].textIndex / (controller.blocks.Length - 1);
+                        uv.AddRange(new List<Vector2>() { bottomleft + new Vector2(0, 0.5f / (controller.blocks.Length - 1)), bottomleft + new Vector2(0.5f / (controller.blocks.Length - 1), 0.5f / (controller.blocks.Length - 1)), bottomleft + new Vector2(0.5f / (controller.blocks.Length - 1), 0), bottomleft });
+                    }
+
+
+
+                }
+                
+
+            }
+            yield return null;
+
         }
 
+
+        meshFilter.mesh = new Mesh()
+        {
+            vertices = Verticies.ToArray(),
+            triangles = Triangles.ToArray(),
+            uv = uv.ToArray()
+        };
+        meshCollider.sharedMesh = new Mesh()
+        {
+            vertices = Verticies.ToArray(),
+            triangles = Triangles.ToArray(),
+            uv = uv.ToArray()
+        };
+
+        controller.Done = true;
     }
 
 
