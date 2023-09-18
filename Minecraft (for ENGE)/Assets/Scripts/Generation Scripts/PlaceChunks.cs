@@ -84,8 +84,8 @@ public class PlaceChunks : MonoBehaviour
         {
             for (int j = (int)(playerPos.y - (renderDist + 3)); j < (int)(playerPos.y + (renderDist + 3)); j++)
             {
-                if (i < 0) break;
-                if (j >= 0)
+                if (i < 0 || i >= chunkNum) break;
+                if (j >= 0 || j <chunkNum)
                 {
                     Vector2 pos = new Vector2(i, j);
                     float d = Vector2.Distance(playerPos, pos);
@@ -179,7 +179,9 @@ public class PlaceChunks : MonoBehaviour
 
    void createChunk(int i, int j)
     {
-        ChunkController c = new ChunkController(new Vector3((i * 16), 0,(j * 16)), this);
+
+        
+        ChunkController c = new ChunkController(new Vector3((i * 16), 0,(j * 16)), this,Biome.biomes[1]);
         chunks[i, j] = c;
         c.controller = this;
         c.player = player;

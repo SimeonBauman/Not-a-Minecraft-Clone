@@ -22,10 +22,11 @@ public class ChunkController
     MeshCollider meshCollider;
     MeshFilter meshFilter;
 
-    public int biomeStepth = 60;//the lower the Stepth the steeper the terrain is
-    public int biomeHeight = 20;//the higher the height the higher the mountains will peak at
+   
 
     Vector3 size = new Vector3(16, 124, 16);
+
+    Biome biome;
 
     Vector3[] VertPos = new Vector3[8]{
                         new Vector3(-1, 1, -1), new Vector3(-1, 1, 1),
@@ -44,12 +45,13 @@ public class ChunkController
                     };
 
 
-    public ChunkController(Vector3 pos, PlaceChunks controller)
+    public ChunkController(Vector3 pos, PlaceChunks controller, Biome b)
     {
 
         this.controller = controller;
         chunkObject = new GameObject();
         meshFilter = chunkObject.AddComponent<MeshFilter>();
+        this.biome = b;
         meshCollider = chunkObject.AddComponent<MeshCollider>();
         chunkObject.AddComponent<MeshRenderer>().material = controller.texturePack;
         chunkObject.transform.position = pos;
@@ -82,7 +84,7 @@ public class ChunkController
                     }
                     else
                     {
-                        if ((Mathf.PerlinNoise((x + offX) / biomeStepth, (z + offZ) / biomeStepth) * biomeHeight) + 50 >= y)
+                        if ((Mathf.PerlinNoise((x + offX) / biome.biomeStepth, (z + offZ) / biome.biomeStepth) * biome.biomeHeight) + 50 >= y)
                         {
                             int r = Random.Range(1, 3);
                             blocks[x, y, z] = new Block(r);
@@ -255,7 +257,8 @@ public class ChunkController
                             if (((nX == -1 || nX == 16 || nZ == -1 || nZ == 16)))
                             {
 
-                                if (Mathf.PerlinNoise((b.x) / biomeStepth, (b.z) / biomeStepth) * biomeHeight + 50 < b.y)
+
+                                if (Mathf.PerlinNoise((b.x) / biome.biomeStepth, (b.z) / biome.biomeStepth) * biome.biomeHeight + 50 < b.y)
                                 {
                                     AddQuad(o, Verticies.Count);
                                 }
