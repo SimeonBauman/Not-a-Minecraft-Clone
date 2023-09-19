@@ -26,7 +26,7 @@ public class PlaceChunks : MonoBehaviour
 
     public bool onStart = true;
 
-    float renderDist = 5;
+    float renderDist = 12;
 
     float sTime;
 
@@ -85,7 +85,7 @@ public class PlaceChunks : MonoBehaviour
             for (int j = (int)(playerPos.y - (renderDist + 3)); j < (int)(playerPos.y + (renderDist + 3)); j++)
             {
                 if (i < 0 || i >= chunkNum) break;
-                if (j >= 0 || j <chunkNum)
+                if (j >= 0 && j <chunkNum-1)
                 {
                     Vector2 pos = new Vector2(i, j);
                     float d = Vector2.Distance(playerPos, pos);
@@ -113,13 +113,13 @@ public class PlaceChunks : MonoBehaviour
 
 
                     }
-                    if (d < renderDist)
+                    else if (d < renderDist)
                     {
                         chunks[i, j].chunkObject.SetActive(true);
                     }
                     else
                     {
-                        if (chunks[i, j] != null && chunks[i, j].chunkObject.activeSelf) chunks[i, j].chunkObject.SetActive(false);
+                        if (chunks[i, j] != null && chunks[i,j].chunkObject != null && chunks[i, j].chunkObject.activeSelf) chunks[i, j].chunkObject.SetActive(false);
                     }
                 }
                
