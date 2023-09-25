@@ -257,7 +257,7 @@ public class ChunkController
 
                             ChunkController c = null;
 
-                            if (((nX == -1 || nX == 16 || nZ == -1 || nZ == 16)))
+                            if ((nX == -1 || nX == 16 || nZ == -1 || nZ == 16))
                             {
                                 if ((nX == -1 || nX == 16) && (nZ == -1 || nZ == 16))
                                 {
@@ -279,7 +279,7 @@ public class ChunkController
 
                                 }
 
-                                b += c.chunkObject.transform.position;
+                                b += chunkObject.transform.position;
 
                                 if (Mathf.PerlinNoise((b.x) / c.biome.biomeStepth, (b.z) / c.biome.biomeStepth) * c.biome.biomeHeight + 50 < b.y)
                                 {

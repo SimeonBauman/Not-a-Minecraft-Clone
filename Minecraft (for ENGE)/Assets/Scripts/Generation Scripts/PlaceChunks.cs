@@ -179,9 +179,9 @@ public class PlaceChunks : MonoBehaviour
 
    void createChunk(int i, int j)
     {
+        int r = Random.Range(0, 3);
 
-        
-        ChunkController c = new ChunkController(new Vector3((i * 16), 0,(j * 16)), this,Biome.biomes[1]);
+        ChunkController c = new ChunkController(new Vector3((i * 16), 0,(j * 16)), this,Biome.biomes[r]);
         chunks[i, j] = c;
         c.controller = this;
         c.player = player;
