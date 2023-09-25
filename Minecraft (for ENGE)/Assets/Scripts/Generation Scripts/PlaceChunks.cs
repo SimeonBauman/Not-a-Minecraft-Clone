@@ -26,7 +26,7 @@ public class PlaceChunks : MonoBehaviour
 
     public bool onStart = true;
 
-    float renderDist = 12;
+    float renderDist = 8;
 
     float sTime;
 
