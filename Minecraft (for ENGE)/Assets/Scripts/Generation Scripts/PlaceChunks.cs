@@ -61,7 +61,7 @@ public class PlaceChunks : MonoBehaviour
     private void Update()
     {
         listLenth = chunksToGen.Count;
-        if(Time.frameCount > (renderDist + 1.5f) * (renderDist + 1.5f) * 17 && onStart && listLenth ==0)
+        if(Time.realtimeSinceStartup > 10 && onStart && listLenth ==0)
         {
             onStart = false;
             player = new Player(spawnPoint, this).p;
@@ -195,7 +195,12 @@ public class PlaceChunks : MonoBehaviour
 
         int x = Mathf.FloorToInt(pos.x / 16);
         int z = Mathf.FloorToInt(pos.z / 16);
+        if (x < 0 || z < 0 || x>= chunkNum || z>= chunkNum-1)
+            return chunks[1,1];
+
         return chunks[x,z];
+
+        
 
     }
 }

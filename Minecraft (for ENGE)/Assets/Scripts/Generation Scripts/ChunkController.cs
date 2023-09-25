@@ -250,16 +250,40 @@ public class ChunkController
                             int nX = x + Faces[o, 4];
                             int nZ = z + Faces[o, 6];
 
-                            Vector3 b = new Vector3(x + Faces[o, 4] - 7.5f, y + Faces[o, 5], z + Faces[o, 6] - 7.5f);
+                            
 
-                            b += chunkObject.transform.position;
+                            Vector3 b = new Vector3(x + Faces[o, 4] - 7.5f, y + Faces[o,5], z + Faces[o, 6] - 7.5f);
+                            
+
+                            ChunkController c = null;
 
                             if (((nX == -1 || nX == 16 || nZ == -1 || nZ == 16)))
                             {
-
-
-                                if (Mathf.PerlinNoise((b.x) / biome.biomeStepth, (b.z) / biome.biomeStepth) * biome.biomeHeight + 50 < b.y)
+                                if ((nX == -1 || nX == 16) && (nZ == -1 || nZ == 16))
                                 {
+                                    c = controller.chunks[index[0] + (nX % 15), index[1] + (nZ % 15)];
+      
+
+                                }
+                                else if (nX == -1 || nX == 16)
+                                {
+                                    c = controller.chunks[index[0] + (nX % 15), index[1]];
+  
+
+
+                                }
+                                else if (nZ == -1 || nZ == 16)
+                                {
+                                    c = controller.chunks[index[0], index[1] + (nZ % 15)];
+   
+
+                                }
+
+                                b += c.chunkObject.transform.position;
+
+                                if (Mathf.PerlinNoise((b.x) / c.biome.biomeStepth, (b.z) / c.biome.biomeStepth) * c.biome.biomeHeight + 50 < b.y)
+                                {
+                                   
                                     AddQuad(o, Verticies.Count);
                                 }
 
