@@ -26,7 +26,7 @@ public class PlaceChunks : MonoBehaviour
 
     public bool onStart = true;
 
-    float renderDist = 8;
+    float renderDist = 20;
 
     float sTime;
 
@@ -35,31 +35,22 @@ public class PlaceChunks : MonoBehaviour
 
     public int seed = 1;
 
-    public int xOff;
-    public int zOff;
-
-    public int bXOff;
-    public int bZOff;
-
+ 
      List<ChunkController> chunksToGen = new List<ChunkController>();
 
     public int listLenth;
-    Vector3 spawnPoint;
+    
     void Start()
     {
-       
-
-        Random.seed = seed;
-        xOff = Random.Range(0, 1000000);
-        zOff = Random.Range(0, 1000000);
-        bXOff = Random.Range(0, 1000000);
-        bZOff = Random.Range(0, 1000000);
+        NoiseVars.chunkNum = chunkNum;
+        NoiseVars.recalc(seed);
+        
         chunks = new ChunkController[chunkNum,chunkNum];
-        timers= new float[chunkNum * chunkNum];
-        spawnPoint = new Vector3(Random.Range(1, chunkNum * 16), 100, Random.Range(1, chunkNum * 16));
-        player.transform.position = spawnPoint;
+        
+        
+        player.transform.position = NoiseVars.spawnPoint;
 
-        place(new Vector2(spawnPoint.x,spawnPoint.z));
+        place(new Vector2(NoiseVars.spawnPoint.x,NoiseVars.spawnPoint.z));
         
         
         
@@ -75,7 +66,7 @@ public class PlaceChunks : MonoBehaviour
         if(Time.realtimeSinceStartup > 10 && onStart && listLenth ==0)
         {
             onStart = false;
-            player = new Player(spawnPoint, this).p;
+            player = new Player(NoiseVars.spawnPoint, this).p;
         }
         if(lastPlayerChunk != null)
         {
@@ -190,9 +181,9 @@ public class PlaceChunks : MonoBehaviour
 
    void createChunk(int i, int j)
     {
-        int r = Random.Range(0, 3);
-        r = (int)(Mathf.PerlinNoise(bXOff + i,bZOff + j) * 3);
-        Debug.Log(Mathf.PerlinNoise(bXOff + i, bZOff + j) / 100);
+
+        int r = biomeIndex(i,j);
+        
         ChunkController c = new ChunkController(new Vector3((i * 16), 0,(j * 16)), this,Biome.biomes[r]);
         chunks[i, j] = c;
         c.controller = this;
@@ -214,5 +205,14 @@ public class PlaceChunks : MonoBehaviour
 
         
 
+    }
+
+    public int biomeIndex(int i,int j)
+    {
+        float x = NoiseVars.bXOff + i;
+        float z = NoiseVars.bZOff + j;
+        int r;
+        r = Mathf.RoundToInt((Mathf.PerlinNoise(x / 20, z / 20) * (Biome.biomes.Length - 1)));
+        return r;
     }
 }

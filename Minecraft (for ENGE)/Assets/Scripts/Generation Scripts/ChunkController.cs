@@ -67,8 +67,8 @@ public class ChunkController
     {
 
         Random.seed = controller.seed;
-        float offX = (chunkObject.transform.position.x - 7.5f + controller.xOff);
-        float offZ = (chunkObject.transform.position.z - 7.5f + controller.zOff);
+        float offX = (chunkObject.transform.position.x - 7.5f + NoiseVars.xOff);
+        float offZ = (chunkObject.transform.position.z - 7.5f + NoiseVars.zOff);
 
         int airBlocks = 0;
         bool finish = false;
@@ -90,7 +90,7 @@ public class ChunkController
                         if ((Mathf.PerlinNoise(pX,pZ ) * biome.biomeHeight) + 50 >= y)
                         {
                             int r = Random.Range(1, 3);
-                            blocks[x, y, z] = new Block(r);
+                            blocks[x, y, z] = new Block((int)biome.blockLayers[0].textIndex);
 
 
 
@@ -119,8 +119,10 @@ public class ChunkController
 
         }
 
-       
-
+        float avgHeights()
+        {
+            return (Biome.biomes[controller.biomeIndex(index[0] - 1, index[1])].biomeHeight + Biome.biomes[controller.biomeIndex(index[0] + 1, index[1])].biomeHeight + Biome.biomes[controller.biomeIndex(index[0], index[1] - 1)].biomeHeight + Biome.biomes[controller.biomeIndex(index[0], index[1] + 1)].biomeHeight + biome.biomeHeight) / 5;
+        }
     }
 
 
@@ -247,7 +249,7 @@ public class ChunkController
 
                     if (blocks[x, y, z] != null && blocks[x, y, z].textIndex != 0)
                     {
-                        checkBlockUpdate(new int[] { x, y, z }, y + blocks[x, y + 1, z].textIndex);
+                        //checkBlockUpdate(new int[] { x, y, z }, y + blocks[x, y + 1, z].textIndex);
                         for (int o = 0; o < 6; o++)
                         {
                             int nX = x + Faces[o, 4];
@@ -255,7 +257,7 @@ public class ChunkController
 
                             
 
-                            Vector3 b = new Vector3(x + Faces[o, 4] - 7.5f + controller.xOff, y + Faces[o,5], z + Faces[o, 6] - 7.5f + controller.zOff);
+                            Vector3 b = new Vector3(x + Faces[o, 4] - 7.5f + NoiseVars.xOff, y + Faces[o,5], z + Faces[o, 6] - 7.5f + NoiseVars.zOff);
                             
 
                             ChunkController c = null;
@@ -351,4 +353,6 @@ public class ChunkController
             blocks[b[0], b[1], b[2]] = new Block(2);
         }
     }
+
+    
 }

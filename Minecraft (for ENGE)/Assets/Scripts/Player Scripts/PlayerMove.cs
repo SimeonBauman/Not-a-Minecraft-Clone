@@ -28,11 +28,11 @@ public class PlayerMove : MonoBehaviour
             vSpeed = 0; 
             if (Input.GetKey("space"))
             { 
-                vSpeed = 4;
+                vSpeed = 8;
             }
         }
 
-        vSpeed -= 9.8f * Time.deltaTime;
+        vSpeed -= 19.6f * Time.deltaTime;
 
         move.y = vSpeed;
 

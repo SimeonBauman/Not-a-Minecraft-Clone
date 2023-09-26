@@ -12,16 +12,16 @@ public class Player
     {
 
         p = new GameObject("player");
-     
-        
-       
+
+        p.transform.position = pos;
+
         p.AddComponent<PlayerMove>();
         p.AddComponent<CharacterController>().radius = .45f;
         cam = new GameObject("eyes");
         cam.AddComponent<PlayerLook>().player = p.transform;
         cam.AddComponent<Build>().controller = controller;
         cam.AddComponent<Camera>();
-        p.transform.position = pos;
+        
         pos.y = pos.y + .5f;
         cam.transform.position = pos;
         cam.transform.SetParent(p.transform);
