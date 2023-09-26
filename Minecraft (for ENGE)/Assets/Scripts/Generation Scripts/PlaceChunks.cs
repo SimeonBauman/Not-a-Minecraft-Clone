@@ -32,7 +32,15 @@ public class PlaceChunks : MonoBehaviour
 
     public bool Done = true;
 
-    
+
+    public int seed = 1;
+
+    public int xOff;
+    public int zOff;
+
+    public int bXOff;
+    public int bZOff;
+
      List<ChunkController> chunksToGen = new List<ChunkController>();
 
     public int listLenth;
@@ -41,8 +49,11 @@ public class PlaceChunks : MonoBehaviour
     {
        
 
-        
-        
+        Random.seed = seed;
+        xOff = Random.Range(0, 1000000);
+        zOff = Random.Range(0, 1000000);
+        bXOff = Random.Range(0, 1000000);
+        bZOff = Random.Range(0, 1000000);
         chunks = new ChunkController[chunkNum,chunkNum];
         timers= new float[chunkNum * chunkNum];
         spawnPoint = new Vector3(Random.Range(1, chunkNum * 16), 100, Random.Range(1, chunkNum * 16));
@@ -180,7 +191,8 @@ public class PlaceChunks : MonoBehaviour
    void createChunk(int i, int j)
     {
         int r = Random.Range(0, 3);
-
+        r = (int)(Mathf.PerlinNoise(bXOff + i,bZOff + j) * 3);
+        Debug.Log(Mathf.PerlinNoise(bXOff + i, bZOff + j) / 100);
         ChunkController c = new ChunkController(new Vector3((i * 16), 0,(j * 16)), this,Biome.biomes[r]);
         chunks[i, j] = c;
         c.controller = this;

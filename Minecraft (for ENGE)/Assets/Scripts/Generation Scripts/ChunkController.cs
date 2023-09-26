@@ -66,8 +66,9 @@ public class ChunkController
     public IEnumerator generateChunk(bool onCreate = false)
     {
 
-        float offX = (chunkObject.transform.position.x - 7.5f);
-        float offZ = (chunkObject.transform.position.z - 7.5f);
+        Random.seed = controller.seed;
+        float offX = (chunkObject.transform.position.x - 7.5f + controller.xOff);
+        float offZ = (chunkObject.transform.position.z - 7.5f + controller.zOff);
 
         int airBlocks = 0;
         bool finish = false;
@@ -84,7 +85,9 @@ public class ChunkController
                     }
                     else
                     {
-                        if ((Mathf.PerlinNoise((x + offX) / biome.biomeStepth, (z + offZ) / biome.biomeStepth) * biome.biomeHeight) + 50 >= y)
+                        float pX = ((x + offX) / biome.biomeStepth);
+                        float pZ = ((z  + offZ) / biome.biomeStepth) ;
+                        if ((Mathf.PerlinNoise(pX,pZ ) * biome.biomeHeight) + 50 >= y)
                         {
                             int r = Random.Range(1, 3);
                             blocks[x, y, z] = new Block(r);
@@ -252,7 +255,7 @@ public class ChunkController
 
                             
 
-                            Vector3 b = new Vector3(x + Faces[o, 4] - 7.5f, y + Faces[o,5], z + Faces[o, 6] - 7.5f);
+                            Vector3 b = new Vector3(x + Faces[o, 4] - 7.5f + controller.xOff, y + Faces[o,5], z + Faces[o, 6] - 7.5f + controller.zOff);
                             
 
                             ChunkController c = null;
