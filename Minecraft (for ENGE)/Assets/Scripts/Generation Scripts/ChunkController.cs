@@ -49,7 +49,8 @@ public class ChunkController
     {
 
         this.controller = controller;
-        chunkObject = new GameObject();
+        chunkObject = new GameObject().gameObject;
+        chunkObject.name = b.name;
         meshFilter = chunkObject.AddComponent<MeshFilter>();
         this.biome = b;
         meshCollider = chunkObject.AddComponent<MeshCollider>();
@@ -85,9 +86,9 @@ public class ChunkController
                     }
                     else
                     {
-                        float pX = ((x + offX) / biome.biomeStepth);
-                        float pZ = ((z  + offZ) / biome.biomeStepth) ;
-                        if ((Mathf.PerlinNoise(pX,pZ ) * biome.biomeHeight) + 50 >= y)
+                        float pX = ((x + offX));
+                        float pZ = ((z  + offZ)) ;
+                        if ((Mathf.PerlinNoise(pX/50,pZ /50) *biome.biomeStepth)  +25>= y || y < 50)
                         {
                             int r = Random.Range(1, 3);
                             blocks[x, y, z] = new Block((int)biome.blockLayers[0].textIndex);
@@ -119,13 +120,16 @@ public class ChunkController
 
         }
 
+        float avgStepths()
+        {
+            return (Biome.biomes[controller.biomeIndex(index[0] - 1, index[1])].biomeStepth + Biome.biomes[controller.biomeIndex(index[0] + 1, index[1])].biomeStepth + Biome.biomes[controller.biomeIndex(index[0], index[1] - 1)].biomeStepth + Biome.biomes[controller.biomeIndex(index[0], index[1] + 1)].biomeStepth + biome.biomeStepth) / 5;
+        }
         float avgHeights()
         {
             return (Biome.biomes[controller.biomeIndex(index[0] - 1, index[1])].biomeHeight + Biome.biomes[controller.biomeIndex(index[0] + 1, index[1])].biomeHeight + Biome.biomes[controller.biomeIndex(index[0], index[1] - 1)].biomeHeight + Biome.biomes[controller.biomeIndex(index[0], index[1] + 1)].biomeHeight + biome.biomeHeight) / 5;
         }
-    }
 
-
+        }
 
     public void GenerateMesh(bool onCreate = false)
     {
@@ -286,7 +290,7 @@ public class ChunkController
 
                                 b += chunkObject.transform.position;
 
-                                if (Mathf.PerlinNoise((b.x) / c.biome.biomeStepth, (b.z) / c.biome.biomeStepth) * c.biome.biomeHeight + 50 < b.y)
+                                if ((Mathf.PerlinNoise((b.x/50) , (b.z/50) )*c.biome.biomeStepth)  +25 < b.y && b.y>=50)
                                 {
                                    
                                     AddQuad(o, Verticies.Count);
