@@ -26,7 +26,7 @@ public class PlaceChunks : MonoBehaviour
 
     public bool onStart = true;
 
-    float renderDist = 8;
+    float renderDist = 20;
 
     float sTime;
 
@@ -42,7 +42,7 @@ public class PlaceChunks : MonoBehaviour
     
     void Start()
     {
-
+        //writeBiomes();
         NoiseVars.chunkNum = chunkNum;
         NoiseVars.recalc(seed);
         
@@ -86,7 +86,7 @@ public class PlaceChunks : MonoBehaviour
         string b = "public static Biome[] biomes = new Biome[]{";
         for (int i = 10;i< 90; i++)
         {
-            s += "public static Biome Chunk_" + i + " = new Biome(\"Chunk_" + i + "\" "+ ", " + (90 - i)+","+ i + " , new Block[] { new Block(2), new Block(2) });\n";
+            s += "public static Biome Chunk_" + i + " = new Biome(\"Chunk_" + i + "\" "+ ", " + (90 - i)+","+ i + " , new Block[] { new Block(2), new Block(1) });\n";
             b += "Chunk_" + i + ", ";
         }
         b += "};";
@@ -227,8 +227,8 @@ public class PlaceChunks : MonoBehaviour
         float x = NoiseVars.bXOff + i;
         float z = NoiseVars.bZOff + j;
         int r;
-        r = Mathf.RoundToInt((Mathf.PerlinNoise(x /(Biome.biomes.Length * 2) , z / (Biome.biomes.Length * 2)) *Biome.biomes.Length));
-        Debug.Log(r);
+        r = Mathf.RoundToInt((Mathf.PerlinNoise(x /(Biome.biomes.Length * 3) , z / (Biome.biomes.Length * 3)) *Biome.biomes.Length));
+        
         return r;
     }
 }

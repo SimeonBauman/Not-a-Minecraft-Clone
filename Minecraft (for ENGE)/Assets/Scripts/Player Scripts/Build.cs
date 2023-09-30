@@ -37,7 +37,7 @@ public class Build : MonoBehaviour
                 p = new Vector3(Mathf.RoundToInt(p.x), Mathf.RoundToInt(p.y), Mathf.RoundToInt(p.z));
                 
                 ChunkController c = controller.GetChunkFromVector3(g.transform.position);
-
+                Debug.Log(c.blocks[(int)p.x, (int)p.y, (int)p.z].textIndex);
                 c.blocks[(int)p.x, (int)p.y, (int)p.z] = new Block(0);
                 c.GenerateMesh();
 
@@ -56,7 +56,7 @@ public class Build : MonoBehaviour
                 g = c.chunkObject;
                 p -= g.transform.position;
 
-                c.blocks[(int)p.x, (int)p.y, (int)p.z] = new Block(1);
+                c.blocks[(int)p.x, (int)p.y, (int)p.z] = new Block(4);
                 c.GenerateMesh();
 
             }

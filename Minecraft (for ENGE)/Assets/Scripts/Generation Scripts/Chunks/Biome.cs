@@ -6,14 +6,14 @@ public class Biome
 {
     public string name;
     public int biomeStepth;
-    public int biomeHeight;
+    public float treeOdds;
     public Block[] blockLayers;
 
-    public Biome(string name, int biomeStepth, int biomeHeight, Block[] blockLayers)
+    public Biome(string name, int biomeStepth, int treeOdds, Block[] blockLayers)
     {
         this.name = name;
         this.biomeStepth = biomeStepth;
-        this.biomeHeight = biomeHeight;
+        this.treeOdds = (float)treeOdds/100;
         this.blockLayers = blockLayers;
     }
 

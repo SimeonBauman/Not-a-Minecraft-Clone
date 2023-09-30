@@ -22,7 +22,7 @@ public class ChunkController
     MeshCollider meshCollider;
     MeshFilter meshFilter;
 
-   
+   bool small = false;
 
     Vector3 size = new Vector3(16, 124, 16);
 
@@ -88,10 +88,19 @@ public class ChunkController
                     {
                         float pX = ((x + offX));
                         float pZ = ((z  + offZ)) ;
-                        if ((Mathf.PerlinNoise(pX/50,pZ /50) *biome.biomeStepth)  +25>= y || y < 50)
+                        if ((Mathf.PerlinNoise(pX / 50, pZ / 50) * biome.biomeStepth) + 25 >= y)
                         {
-                            int r = Random.Range(1, 3);
+                            
+                               
+                                blocks[x, y, z] = new Block((int)biome.blockLayers[0].textIndex);
+                                
+
+                        }
+                        else if (y <= 50 && (Mathf.PerlinNoise(pX / 75, pZ / 75) * biome.biomeStepth / 2) + 25 >= y)
+                        {
+                            
                             blocks[x, y, z] = new Block((int)biome.blockLayers[0].textIndex);
+                            small = true;
 
 
 
@@ -118,18 +127,20 @@ public class ChunkController
             }
             else airBlocks = 0;
 
+            
         }
+        placeTree();
 
         float avgStepths()
         {
             return (Biome.biomes[controller.biomeIndex(index[0] - 1, index[1])].biomeStepth + Biome.biomes[controller.biomeIndex(index[0] + 1, index[1])].biomeStepth + Biome.biomes[controller.biomeIndex(index[0], index[1] - 1)].biomeStepth + Biome.biomes[controller.biomeIndex(index[0], index[1] + 1)].biomeStepth + biome.biomeStepth) / 5;
         }
-        float avgHeights()
+        /*float avgHeights()
         {
-            return (Biome.biomes[controller.biomeIndex(index[0] - 1, index[1])].biomeHeight + Biome.biomes[controller.biomeIndex(index[0] + 1, index[1])].biomeHeight + Biome.biomes[controller.biomeIndex(index[0], index[1] - 1)].biomeHeight + Biome.biomes[controller.biomeIndex(index[0], index[1] + 1)].biomeHeight + biome.biomeHeight) / 5;
-        }
+           // return (Biome.biomes[controller.biomeIndex(index[0] - 1, index[1])].biomeHeight + Biome.biomes[controller.biomeIndex(index[0] + 1, index[1])].biomeHeight + Biome.biomes[controller.biomeIndex(index[0], index[1] - 1)].biomeHeight + Biome.biomes[controller.biomeIndex(index[0], index[1] + 1)].biomeHeight + biome.biomeHeight) / 5;
+        }*/
 
-        }
+    }
 
     public void GenerateMesh(bool onCreate = false)
     {
@@ -205,7 +216,7 @@ public class ChunkController
 
                         // Add uvs
                         Vector2 bottomleft = new Vector2(Faces[facenum, 7], Faces[facenum, 8]) / (2f * (controller.blocks.Length - 1));
-                        bottomleft.x += blocks[x, y, z].textIndex / (controller.blocks.Length - 1);
+                        bottomleft.x += (blocks[x, y, z].textIndex-1) / (controller.blocks.Length - 1);
                         uv.AddRange(new List<Vector2>() { bottomleft + new Vector2(0, 0.5f / (controller.blocks.Length - 1)), bottomleft + new Vector2(0.5f / (controller.blocks.Length - 1), 0.5f / (controller.blocks.Length - 1)), bottomleft + new Vector2(0.5f / (controller.blocks.Length - 1), 0), bottomleft });
                     }
 
@@ -253,7 +264,7 @@ public class ChunkController
 
                     if (blocks[x, y, z] != null && blocks[x, y, z].textIndex != 0)
                     {
-                        //checkBlockUpdate(new int[] { x, y, z }, y + blocks[x, y + 1, z].textIndex);
+                        checkBlockUpdate(new int[] { x, y, z }, y + blocks[x, y + 1, z].textIndex);
                         for (int o = 0; o < 6; o++)
                         {
                             int nX = x + Faces[o, 4];
@@ -289,12 +300,14 @@ public class ChunkController
                                 }
 
                                 b += chunkObject.transform.position;
-
-                                if ((Mathf.PerlinNoise((b.x/50) , (b.z/50) )*c.biome.biomeStepth)  +25 < b.y && b.y>=50)
+                                
+                                if ((Mathf.PerlinNoise((b.x / 50), (b.z / 50)) * c.biome.biomeStepth) + 25 < b.y)
                                 {
-                                   
+
                                     AddQuad(o, Verticies.Count);
                                 }
+                               
+
 
                             }
 
@@ -312,7 +325,7 @@ public class ChunkController
 
                         // Add uvs
                         Vector2 bottomleft = new Vector2(Faces[facenum, 7], Faces[facenum, 8]) / (2f * (controller.blocks.Length - 1));
-                        bottomleft.x += blocks[x, y, z].textIndex / (controller.blocks.Length - 1);
+                        bottomleft.x += (blocks[x, y, z].textIndex-1) / (controller.blocks.Length - 1);
                         uv.AddRange(new List<Vector2>() { bottomleft + new Vector2(0, 0.5f / (controller.blocks.Length - 1)), bottomleft + new Vector2(0.5f / (controller.blocks.Length - 1), 0.5f / (controller.blocks.Length - 1)), bottomleft + new Vector2(0.5f / (controller.blocks.Length - 1), 0), bottomleft });
                     }
 
@@ -348,15 +361,42 @@ public class ChunkController
         
     {
         //Debug.Log(b[1] + " , " + y);
-        if(b[1] == y && blocks[b[0], b[1], b[2]].textIndex == 2 )
-        {
-            blocks[b[0], b[1], b[2]] = new Block(1);
-        }
-        else if(b[1] < y && blocks[b[0], b[1], b[2]].textIndex == 1)
+        if(b[1] == y && blocks[b[0], b[1], b[2]].textIndex == 1 )
         {
             blocks[b[0], b[1], b[2]] = new Block(2);
         }
+        else if(b[1] < y && blocks[b[0], b[1], b[2]].textIndex == 2)
+        {
+            blocks[b[0], b[1], b[2]] = new Block(1);
+        }
     }
 
+    void placeTree()
+    {
+        int pos = 0 ;
+        for(int y = 1; y < 123; y++)
+        {
+            if (blocks[7,y,7] != null && blocks[7,y,7].textIndex == 0)
+            {
+                pos = y;
+                break;
+            }
+        }
+
+        if (pos != 0)
+        {
+            
+            for (int y = 0; y < Tree.treeTemp.GetLength(0); y++)
+            {
+                for (int x = -2; x <= 2; x++)
+                {
+                    for (int z = -2; z <= 2; z++)
+                    {
+                        this.blocks[x + 7, y + pos, z + 7] = new Block(Tree.treeTemp[Tree.treeTemp.GetLength(0) - 1 - y, x + 2, z + 2]);
+                    }
+                }
+            }
+        }
+    }
     
 }
