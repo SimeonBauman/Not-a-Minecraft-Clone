@@ -13,7 +13,7 @@ public class Biome
     {
         this.name = name;
         this.biomeStepth = biomeStepth;
-        this.treeOdds = (float)treeOdds/100;
+        this.treeOdds = treeOdds;
         this.blockLayers = blockLayers;
     }
 

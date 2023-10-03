@@ -373,30 +373,59 @@ public class ChunkController
 
     void placeTree()
     {
-        int pos = 0 ;
-        for(int y = 1; y < 123; y++)
+        int seed = Random.seed;
+        int pos = 0;
+        Random.seed = NoiseVars.Seed;
+        for (int i = 0; i < 5; i++)
         {
-            if (blocks[7,y,7] != null && blocks[7,y,7].textIndex == 0)
-            {
-                pos = y;
-                break;
-            }
-        }
 
-        if (pos != 0)
-        {
+           
             
-            for (int y = 0; y < Tree.treeTemp.GetLength(0); y++)
+            
+            float r = Random.Range(0, 100);
+         
+            if ( r < biome.treeOdds)
             {
-                for (int x = -2; x <= 2; x++)
+
+                int xPos = Random.Range(2, 14); ;
+                
+                int zPos = Random.Range(2, 14);
+               
+               
+                for (int y = 1; y < 123; y++)
                 {
-                    for (int z = -2; z <= 2; z++)
+                    if (blocks[xPos, y, zPos] != null && blocks[xPos, y, zPos].textIndex == 0 && (blocks[xPos, y-1, zPos].textIndex == 1 || blocks[xPos, y-1, zPos].textIndex == 2))
                     {
-                        this.blocks[x + 7, y + pos, z + 7] = new Block(Tree.treeTemp[Tree.treeTemp.GetLength(0) - 1 - y, x + 2, z + 2]);
+                        pos = y;
+                        
+                        break;
                     }
                 }
+
+                if (pos != 0)
+                {
+
+                    for (int y = 0; y < Tree.treeTemp.GetLength(0); y++)
+                    {
+                        for (int x = -2 + xPos; x <= 2 + xPos; x++)
+                        {
+                            for (int z = -2 + zPos; z <= 2 + zPos; z++)
+                            {
+                                if (blocks[x, y + pos, z].textIndex == 0)
+                                {
+                                    this.blocks[x, y + pos, z] = new Block(Tree.treeTemp[Tree.treeTemp.GetLength(0) - 1 - y, x + 2 - xPos, z + 2 - zPos]);
+                                }
+                            }
+                        }
+                    }
+                }
+                Random.seed = Mathf.RoundToInt((pos * Mathf.PerlinNoise(chunkObject.transform.position.x / 50, chunkObject.transform.position.z / 50) * biome.biomeStepth) + 25);
+                Debug.Log(Random.seed);
             }
+           
+            pos = 0;
         }
+        Random.seed = seed;
     }
     
 }
