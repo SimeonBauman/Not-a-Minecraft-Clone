@@ -16,6 +16,7 @@ public class Player
         p.transform.position = pos;
 
         p.AddComponent<PlayerMove>();
+        p.tag = "Player";
         p.AddComponent<CharacterController>().radius = .4f;
         p.GetComponent<CharacterController>().height = 1.8f;
         cam = new GameObject("eyes");

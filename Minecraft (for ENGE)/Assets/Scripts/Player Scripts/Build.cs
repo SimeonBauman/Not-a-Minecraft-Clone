@@ -37,7 +37,8 @@ public class Build : MonoBehaviour
                 p = new Vector3(Mathf.RoundToInt(p.x), Mathf.RoundToInt(p.y), Mathf.RoundToInt(p.z));
                 
                 ChunkController c = controller.GetChunkFromVector3(g.transform.position);
-                Debug.Log(c.blocks[(int)p.x, (int)p.y, (int)p.z].textIndex);
+                GameObject b = Instantiate((controller.blocks[(int)c.blocks[(int)p.x, (int)p.y, (int)p.z].textIndex]), hit.point, Quaternion.identity);
+                b.GetComponent<BlockEntity>().textIndex = c.blocks[(int)p.x, (int)p.y, (int)p.z].textIndex;
                 c.blocks[(int)p.x, (int)p.y, (int)p.z] = new Block(0);
                 c.GenerateMesh();
 
