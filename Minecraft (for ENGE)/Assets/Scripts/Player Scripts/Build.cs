@@ -23,7 +23,7 @@ public class Build : MonoBehaviour
         
         RaycastHit hit;
         int layer_mask = LayerMask.GetMask("chunk");
-        if (Physics.Raycast(transform.position,transform.forward,out hit, reach))
+        if (Physics.Raycast(transform.position,transform.forward,out hit, reach,layer_mask))
         {
             GameObject g = hit.collider.transform.gameObject;
             Vector3 p = hit.point;

@@ -56,7 +56,7 @@ public class ChunkController
         meshCollider = chunkObject.AddComponent<MeshCollider>();
         chunkObject.AddComponent<MeshRenderer>().material = controller.texturePack;
         chunkObject.transform.position = pos;
-
+        chunkObject.layer = 6;
         blocks = new Block[(int)size.x, (int)size.y, (int)size.z];
 
 
