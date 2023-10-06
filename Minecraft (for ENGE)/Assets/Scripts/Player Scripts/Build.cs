@@ -56,8 +56,8 @@ public class Build : MonoBehaviour
                 ChunkController c = controller.GetChunkFromVector3(p);
                 g = c.chunkObject;
                 p -= g.transform.position;
-
-                c.blocks[(int)p.x, (int)p.y, (int)p.z] = new Block(4);
+                PlayerInvetory Pi = transform.parent.GetComponent<PlayerInvetory>();
+                c.blocks[(int)p.x, (int)p.y, (int)p.z] = new Block(Pi.placeBlock());
                 c.GenerateMesh();
 
             }

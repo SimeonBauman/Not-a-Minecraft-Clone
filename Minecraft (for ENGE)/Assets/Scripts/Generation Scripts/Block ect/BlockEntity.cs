@@ -18,6 +18,7 @@ public class BlockEntity : MonoBehaviour
     {
         if (other.tag.Equals("Player"))
         {
+            other.GetComponent<PlayerInvetory>().pickUp((int)textIndex);
             Destroy(gameObject);
         }
     }
