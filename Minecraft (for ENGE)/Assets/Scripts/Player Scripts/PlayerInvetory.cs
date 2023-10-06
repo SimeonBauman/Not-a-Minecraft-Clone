@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerInvetory : MonoBehaviour
 {
 
-    public Vector2[] invetory = new Vector2[4];
+    public Vector2[] invetory = new Vector2[10];
     public  int currentIndex;
     // Start is called before the first frame update
     void Start()
@@ -16,7 +16,9 @@ public class PlayerInvetory : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        currentIndex -= (int)(Input.GetAxis("Mouse ScrollWheel") * 10) -10;
+        currentIndex %= 10;
+        currentIndex = Mathf.Abs(currentIndex);
     }
     public int placeBlock()
     {

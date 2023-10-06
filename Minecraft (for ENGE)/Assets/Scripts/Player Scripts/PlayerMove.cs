@@ -32,7 +32,7 @@ public class PlayerMove : MonoBehaviour
             }
         }
 
-        vSpeed -= 19.6f * Time.deltaTime;
+        vSpeed -= 29.4f * Time.deltaTime;
 
         move.y = vSpeed;
 

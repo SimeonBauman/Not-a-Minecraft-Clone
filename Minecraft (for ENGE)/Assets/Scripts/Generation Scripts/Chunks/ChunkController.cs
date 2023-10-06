@@ -420,7 +420,7 @@ public class ChunkController
                     }
                 }
                 Random.seed = Mathf.RoundToInt((pos * Mathf.PerlinNoise(chunkObject.transform.position.x / 50, chunkObject.transform.position.z / 50) * biome.biomeStepth) + 25);
-                Debug.Log(Random.seed);
+                
             }
            
             pos = 0;
