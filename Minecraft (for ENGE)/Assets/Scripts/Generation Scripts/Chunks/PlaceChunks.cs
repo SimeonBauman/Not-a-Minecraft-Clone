@@ -26,7 +26,7 @@ public class PlaceChunks : MonoBehaviour
 
     public bool onStart = true;
 
-    float renderDist = 12;
+    float renderDist = 8;
 
     float sTime;
 
@@ -39,6 +39,8 @@ public class PlaceChunks : MonoBehaviour
      List<ChunkController> chunksToGen = new List<ChunkController>();
 
     public int listLenth;
+
+    int lastTime;
     
     void Start()
     {
@@ -72,8 +74,9 @@ public class PlaceChunks : MonoBehaviour
         if(lastPlayerChunk != null)
         {
             
-            if (lastPlayerChunk != GetChunkFromVector3(player.transform.position) || Time.realtimeSinceStartup > 7)
+            if (lastPlayerChunk != GetChunkFromVector3(player.transform.position) ||Time.time > lastTime + 7)
             {
+                lastTime = (int)Time.time;
                 refreshRenderDist();
 
             }
