@@ -95,7 +95,7 @@ public class ChunkController
                         if (y <= 50 && pNoise2 >= y)
                         {
 
-                            blocks[x, y, z] = new Block(layers(pNoise2 - y));
+                            blocks[x, y, z] = new Block(layers(y,pNoise2,x));
 
 
 
@@ -105,7 +105,7 @@ public class ChunkController
                         {
 
 
-                            blocks[x, y, z] = new Block(layers(pNoise - y));
+                            blocks[x, y, z] = new Block(layers(y,pNoise,x));
 
 
                         }
@@ -308,7 +308,7 @@ public class ChunkController
 
                             }
 
-                            else if (blocks[nX, y + Faces[o, 5], nZ] == null || blocks[nX, y + Faces[o, 5], nZ].textIndex == 0)
+                            else if (blocks[nX, y + Faces[o, 5], nZ] == null || blocks[nX, y + Faces[o, 5], nZ].textIndex == 0 || blocks[nX, y + Faces[o, 5], nZ].textIndex == 6)
                             {
                                 AddQuad(o, Verticies.Count);
                             }
@@ -426,16 +426,31 @@ public class ChunkController
     }
     
 
-    int layers(float depth)
+    int layers(float y, float height, int xPos)
     {
-        if(depth > 3)
+        float depth = height - y;
+        Random.seed = Mathf.RoundToInt((depth * xPos *  Mathf.PerlinNoise(chunkObject.transform.position.x / 50, chunkObject.transform.position.z / 50) * biome.biomeStepth) + 25);
+        int returnVal;
+        float randRang = Random.Range(0, 1000);
+       // Debug.Log(randRang);
+        if (depth > 3)
         {
-            return 5;
+            if ((height - 12) < depth && randRang < 1)
+            {
+                returnVal = 6;
+            }
+            else
+            {
+                returnVal = 5;
+            }
 
         }
         else
         {
-            return 2;
+            returnVal =  2;
         }
+        Random.seed = NoiseVars.Seed;
+        return returnVal;
+        
     }
 }

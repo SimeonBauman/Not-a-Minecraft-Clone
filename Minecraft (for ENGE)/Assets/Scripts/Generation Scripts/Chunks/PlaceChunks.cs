@@ -74,7 +74,7 @@ public class PlaceChunks : MonoBehaviour
         if(lastPlayerChunk != null)
         {
             
-            if (lastPlayerChunk != GetChunkFromVector3(player.transform.position) ||Time.time > lastTime + 7)
+            if (lastPlayerChunk != GetChunkFromVector3(player.transform.position) ||Time.time > lastTime + 4)
             {
                 lastTime = (int)Time.time;
                 refreshRenderDist();
