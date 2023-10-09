@@ -308,7 +308,7 @@ public class ChunkController
 
                             }
 
-                            else if (blocks[nX, y + Faces[o, 5], nZ] == null || blocks[nX, y + Faces[o, 5], nZ].textIndex == 0 || blocks[nX, y + Faces[o, 5], nZ].textIndex == 6)
+                            else if (blocks[nX, y + Faces[o, 5], nZ] == null || blocks[nX, y + Faces[o, 5], nZ].textIndex == 0 )
                             {
                                 AddQuad(o, Verticies.Count);
                             }
@@ -435,10 +435,23 @@ public class ChunkController
        // Debug.Log(randRang);
         if (depth > 3)
         {
-            if ((height - 12) < depth && randRang < 1)
+            if ((height - 8) < depth && randRang < 1)
             {
                 returnVal = 6;
+                
             }
+            else if ((height - 20) < depth && randRang < 2)
+            {
+                returnVal = 8;
+
+            }
+            else if((height - 45) < depth && randRang < 10 )
+            {
+                returnVal = 7;
+
+            }
+            
+
             else
             {
                 returnVal = 5;
