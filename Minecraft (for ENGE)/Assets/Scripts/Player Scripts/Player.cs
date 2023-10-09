@@ -17,7 +17,9 @@ public class Player
 
         p.AddComponent<PlayerMove>();
         p.tag = "Player";
-        p.AddComponent <PlayerInvetory>();
+        PlayerInvetory i = p.AddComponent <PlayerInvetory>();
+        i.hand = controller.hand;
+        i.controller = controller;
         p.AddComponent<CharacterController>().radius = .4f;
         p.GetComponent<CharacterController>().height = 1.8f;
         cam = new GameObject("eyes");

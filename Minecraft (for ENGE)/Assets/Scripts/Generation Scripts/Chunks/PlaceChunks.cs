@@ -21,7 +21,10 @@ public class PlaceChunks : MonoBehaviour
 
     public GameObject highlighter;
 
+    public GameObject hand;
+
     ChunkController lastPlayerChunk;
+
 
 
     public bool onStart = true;
