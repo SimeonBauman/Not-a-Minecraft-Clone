@@ -12,11 +12,11 @@ GameObject:
   - component: {fileID: 6414759092045770671}
   - component: {fileID: 4011356519132483126}
   - component: {fileID: 3553099423470866824}
-  - component: {fileID: -6202814464451165769}
-  - component: {fileID: 1493160649794363992}
-  - component: {fileID: 266210910147215336}
+  - component: {fileID: 7520443789324022745}
+  - component: {fileID: -5346547135052150954}
+  - component: {fileID: -8814263044242469050}
   m_Layer: 0
-  m_Name: Grass Block
+  m_Name: Stone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -65,7 +65,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 362bcbf77b54865409a24bba373d131a, type: 2}
+  - {fileID: 2100000, guid: 218b0a351917dfb49bdb54962ffaaf08, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -108,7 +108,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2, y: 2, z: 2}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!54 &-6202814464451165769
+--- !u!54 &7520443789324022745
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -135,7 +135,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 0
---- !u!65 &1493160649794363992
+--- !u!65 &-5346547135052150954
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -156,7 +156,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 0.5, z: 1}
   m_Center: {x: 0, y: -1, z: 0}
---- !u!114 &266210910147215336
+--- !u!114 &-8814263044242469050
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -168,6 +168,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 984dfe23e09df734c98c4058a50c1edc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textIndex: 2
+  textIndex: 5
   canPlace: 1
-  drop: {fileID: 2107057388103114735, guid: 4d433c96ff085d14582df444643145aa, type: 3}
+  drop: {fileID: 8092650829203356739}

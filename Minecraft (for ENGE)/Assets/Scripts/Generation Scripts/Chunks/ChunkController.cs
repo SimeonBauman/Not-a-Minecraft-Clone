@@ -88,24 +88,28 @@ public class ChunkController
                     {
                         float pX = ((x + offX));
                         float pZ = ((z  + offZ)) ;
-                        if ((Mathf.PerlinNoise(pX / 50, pZ / 50) * biome.biomeStepth) + 25 >= y)
-                        {
-                            
-                               
-                                blocks[x, y, z] = new Block((int)biome.blockLayers[0].textIndex);
-                                
+                        float pNoise = (Mathf.PerlinNoise(pX / 50, pZ / 50) * biome.biomeStepth) + 25;
+                        float pNoise2 = (Mathf.PerlinNoise(pX / 75, pZ / 75) * biome.biomeStepth / 2) + 25;
 
-                        }
-                        else if (y <= 50 && (Mathf.PerlinNoise(pX / 75, pZ / 75) * biome.biomeStepth / 2) + 25 >= y)
+
+                        if (y <= 50 && pNoise2 >= y)
                         {
-                            
-                            blocks[x, y, z] = new Block((int)biome.blockLayers[0].textIndex);
-                            small = true;
+
+                            blocks[x, y, z] = new Block(layers(pNoise2 - y));
 
 
 
 
                         }
+                        else if (pNoise >= y)
+                        {
+
+
+                            blocks[x, y, z] = new Block(layers(pNoise - y));
+
+
+                        }
+                        
                         else
                         {
                             blocks[x, y, z] = new Block(0);
@@ -131,14 +135,7 @@ public class ChunkController
         }
         placeTree();
 
-        float avgStepths()
-        {
-            return (Biome.biomes[controller.biomeIndex(index[0] - 1, index[1])].biomeStepth + Biome.biomes[controller.biomeIndex(index[0] + 1, index[1])].biomeStepth + Biome.biomes[controller.biomeIndex(index[0], index[1] - 1)].biomeStepth + Biome.biomes[controller.biomeIndex(index[0], index[1] + 1)].biomeStepth + biome.biomeStepth) / 5;
-        }
-        /*float avgHeights()
-        {
-           // return (Biome.biomes[controller.biomeIndex(index[0] - 1, index[1])].biomeHeight + Biome.biomes[controller.biomeIndex(index[0] + 1, index[1])].biomeHeight + Biome.biomes[controller.biomeIndex(index[0], index[1] - 1)].biomeHeight + Biome.biomes[controller.biomeIndex(index[0], index[1] + 1)].biomeHeight + biome.biomeHeight) / 5;
-        }*/
+       
 
     }
 
@@ -157,7 +154,7 @@ public class ChunkController
 
                     if (blocks[x, y, z] != null && blocks[x, y, z].textIndex != 0)
                     {
-                        checkBlockUpdate(new int[] { x, y, z }, y + blocks[x, y + 1, z].textIndex);
+                        
                         for (int o = 0; o < 6; o++)
                         {
                             int nX = x + Faces[o, 4];
@@ -428,4 +425,17 @@ public class ChunkController
         Random.seed = seed;
     }
     
+
+    int layers(float depth)
+    {
+        if(depth > 3)
+        {
+            return 5;
+
+        }
+        else
+        {
+            return 2;
+        }
+    }
 }

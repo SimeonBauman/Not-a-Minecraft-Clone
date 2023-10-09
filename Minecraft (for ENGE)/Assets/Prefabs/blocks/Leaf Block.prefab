@@ -168,4 +168,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 984dfe23e09df734c98c4058a50c1edc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textIndex: 0
+  textIndex: 3
+  canPlace: 1
+  drop: {fileID: 8092650829203356739}

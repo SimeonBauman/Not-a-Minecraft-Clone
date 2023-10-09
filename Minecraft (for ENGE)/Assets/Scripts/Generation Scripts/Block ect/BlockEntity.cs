@@ -6,6 +6,8 @@ public class BlockEntity : MonoBehaviour
 {
     public float textIndex;
     float rot = 0;
+    public bool canPlace = true;
+    public GameObject drop ;
 
     // Update is called once per frame
     void Update()

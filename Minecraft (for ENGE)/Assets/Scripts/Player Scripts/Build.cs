@@ -30,15 +30,16 @@ public class Build : MonoBehaviour
             drawBox(p);
             if (Input.GetButtonDown("Fire1"))
             {
-                
+              
                 
                 p += transform.forward * .01f;
                 p -= g.transform.position;
                 p = new Vector3(Mathf.RoundToInt(p.x), Mathf.RoundToInt(p.y), Mathf.RoundToInt(p.z));
                 
                 ChunkController c = controller.GetChunkFromVector3(g.transform.position);
-                GameObject b = Instantiate((controller.blocks[(int)c.blocks[(int)p.x, (int)p.y, (int)p.z].textIndex]), hit.point, Quaternion.identity);
-                b.GetComponent<BlockEntity>().textIndex = c.blocks[(int)p.x, (int)p.y, (int)p.z].textIndex;
+                GameObject temp = (controller.blocks[(int)c.blocks[(int)p.x, (int)p.y, (int)p.z].textIndex].GetComponent<BlockEntity>().drop);
+                Instantiate(temp, hit.point, Quaternion.identity);
+                
                 c.blocks[(int)p.x, (int)p.y, (int)p.z] = new Block(0);
                 c.GenerateMesh();
 
