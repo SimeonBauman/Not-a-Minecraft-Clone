@@ -50,7 +50,7 @@ public class Build : MonoBehaviour
                     targetedBlock = controller.blocks[(int)c.blocks[(int)p.x, (int)p.y, (int)p.z].textIndex].GetComponent<BlockEntity>();
                     breakTime = Time.time;  
                 }
-                if(Time.time - breakTime >= targetedBlock.durability)
+                if(targetedBlock != null && Time.time - breakTime >= targetedBlock.durability)
                 {
 
                     
@@ -74,7 +74,7 @@ public class Build : MonoBehaviour
                     breakStatus.fillAmount = 0;
                     breakTime = 0;
                 }
-                else
+                else if(targetedBlock != null)
                 {
                     
                     breakStatus.fillAmount = ((Time.time - breakTime)/targetedBlock.durability )+ .1f;
