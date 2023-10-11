@@ -8,7 +8,7 @@ public class BlockEntity : MonoBehaviour
     float rot = 0;
     public bool canPlace = true;
     public GameObject drop ;
-
+    public float durability = 1;
     // Update is called once per frame
     void Update()
     {

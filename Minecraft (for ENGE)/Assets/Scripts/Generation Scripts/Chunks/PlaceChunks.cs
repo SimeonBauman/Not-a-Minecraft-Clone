@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlaceChunks : MonoBehaviour
 {
@@ -25,7 +26,7 @@ public class PlaceChunks : MonoBehaviour
 
     ChunkController lastPlayerChunk;
 
-
+    public Canvas UICanvas;
 
     public bool onStart = true;
 

@@ -16,7 +16,7 @@ public class PlayerInvetory : MonoBehaviour
         currentIndex -= (int)(Input.GetAxis("Mouse ScrollWheel") * 10) -10;
         currentIndex %= 10;
         currentIndex = Mathf.Abs(currentIndex);
-        hand.GetComponent<MeshRenderer>().material = controller.blocks[(int)invetory[currentIndex].x].GetComponent<MeshRenderer>().material;
+        hand.GetComponent<MeshRenderer>().material = controller.blocks[(int)invetory[currentIndex].x].GetComponent<MeshRenderer>().sharedMaterial;
     }
     public int placeBlock()
     {
@@ -56,7 +56,7 @@ public class PlayerInvetory : MonoBehaviour
     {
         for(int i = 0; i < invetory.Length; i++)
         {
-            if ((int)invetory[i].x == textIndex && invetory[i].y <= 64)
+            if ((int)invetory[i].x == textIndex && invetory[i].y < 64)
             {
                 return i;
             }
