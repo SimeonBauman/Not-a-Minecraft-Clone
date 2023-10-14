@@ -50,7 +50,7 @@ public class PlaceChunks : MonoBehaviour
     {
         //writeBiomes();
         NoiseVars.chunkNum = chunkNum;
-        NoiseVars.recalc(seed);
+        NoiseVars.recalc(NoiseVars.Seed);
         
         chunks = new ChunkController[chunkNum,chunkNum];
         
@@ -238,5 +238,10 @@ public class PlaceChunks : MonoBehaviour
         r = Mathf.RoundToInt((Mathf.PerlinNoise(x /(Biome.biomes.Length * 3) , z / (Biome.biomes.Length * 3)) *Biome.biomes.Length));
         
         return r;
+    }
+
+    public void changeRenderDist(float r)
+    {
+        this.renderDist = r;
     }
 }
