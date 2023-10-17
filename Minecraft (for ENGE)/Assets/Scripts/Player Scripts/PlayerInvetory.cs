@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerInvetory : MonoBehaviour
 {
 
-    public Vector2[] invetory = new Vector2[10];
+    public Vector2[] invetory = new Vector2[50];
     public  int currentIndex;
     public GameObject hand;
     public PlaceChunks controller;
