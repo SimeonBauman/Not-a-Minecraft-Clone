@@ -10,6 +10,8 @@ public class PlaceChunks : MonoBehaviour
 
     public GameObject[] hotBarSlots;
 
+    public GameObject playerUI;
+
     public GameObject player;
 
     public ChunkController[,] chunks;
@@ -74,6 +76,8 @@ public class PlaceChunks : MonoBehaviour
         {
             onStart = false;
             player = new Player(NoiseVars.spawnPoint, this).p;
+            playerUI.SetActive(false);
+            playerUI.SetActive(true);
         }
         if(lastPlayerChunk != null)
         {

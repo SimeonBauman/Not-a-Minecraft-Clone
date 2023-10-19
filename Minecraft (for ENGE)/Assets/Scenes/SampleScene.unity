@@ -2123,6 +2123,7 @@ MonoBehaviour:
   - {fileID: 922834563}
   - {fileID: 1937623511}
   - {fileID: 577910532}
+  playerUI: {fileID: 1595511625}
   player: {fileID: 963194225}
   timers: []
   blocks:
