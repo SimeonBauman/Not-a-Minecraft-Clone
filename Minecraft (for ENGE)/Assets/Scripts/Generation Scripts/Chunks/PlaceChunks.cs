@@ -8,7 +8,7 @@ public class PlaceChunks : MonoBehaviour
 {
     public int chunkNum = 10000;
 
- 
+    public GameObject[] hotBarSlots;
 
     public GameObject player;
 

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class PlayerInvetory : MonoBehaviour
 {
@@ -9,7 +10,17 @@ public class PlayerInvetory : MonoBehaviour
     public  int currentIndex;
     public GameObject hand;
     public PlaceChunks controller;
-    
+    public GameObject[] hotBar = new GameObject[10];
+
+    private void Start()
+    {
+        hotBar = controller.hotBarSlots;
+        for(int i =0; i < hotBar.Length; i++)
+        {
+            updateHotBar(i);
+        }
+    }
+
     void Update()
     {
       
@@ -29,7 +40,7 @@ public class PlayerInvetory : MonoBehaviour
             {
                 invetory[currentIndex].x = 0;
             }
-
+            updateHotBar(currentIndex);
             return temp;
         }
 
@@ -41,15 +52,16 @@ public class PlayerInvetory : MonoBehaviour
         int t = returnIndex(textIndex);
         if(t == -1)
         {
-            int i = returnIndex(0);
-            invetory[i].x = textIndex;
-            invetory[i].y = 1;
+            t = returnIndex(0);
+            invetory[t].x = textIndex;
+            invetory[t].y = 1;
 
         }
         else
         {
             invetory[t].y++;
         }
+        updateHotBar(t);
     }
 
     int returnIndex(int textIndex)
@@ -63,5 +75,23 @@ public class PlayerInvetory : MonoBehaviour
         }
 
         return -1;
+    }
+
+    void updateHotBar(int i)
+    {
+
+        hotBar[i].GetComponentInChildren<MeshRenderer>().material = controller.blocks[(int)invetory[i].x].GetComponent<MeshRenderer>().sharedMaterial;
+        
+        if(invetory[i].y >= 1)
+        {
+            hotBar[i].GetComponentInChildren<TMP_Text>().text = ((int)invetory[i].y).ToString();
+            hotBar[i].SetActive(true);
+        }
+        else
+        {
+            hotBar[i].SetActive(false);
+        }
+       
+        
     }
 }
