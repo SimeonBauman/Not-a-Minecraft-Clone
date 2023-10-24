@@ -11,10 +11,21 @@ public class PlayerInvetory : MonoBehaviour
     public GameObject hand;
     public PlaceChunks controller;
     public GameObject[] hotBar = new GameObject[10];
+    PlayerMove pm;
+    PlayerLook pl;
+    bool canMove;
+    public GameObject invetoryVisuals;
+    public GameObject pauseMenu;
 
     private void Start()
     {
+        canMove = true;
         hotBar = controller.hotBarSlots;
+        pm = GetComponent<PlayerMove>();
+        pl = GetComponentInChildren<PlayerLook>();
+        invetoryVisuals = controller.invetoryUI;
+        pauseMenu = controller.pauseMenu;
+
         for(int i =0; i < hotBar.Length; i++)
         {
             updateHotBar(i);
@@ -23,12 +34,69 @@ public class PlayerInvetory : MonoBehaviour
 
     void Update()
     {
-      
-        currentIndex -= (int)(Input.GetAxis("Mouse ScrollWheel") * 10) -10;
+        if (canMove)
+        {
+            actions();
+        }
+        openInvetory();
+        openSettings();
+    }
+
+    void actions()
+    {
+        currentIndex -= (int)(Input.GetAxis("Mouse ScrollWheel") * 10) - 10;
         currentIndex %= 10;
         currentIndex = Mathf.Abs(currentIndex);
         hand.GetComponent<MeshRenderer>().material = controller.blocks[(int)invetory[currentIndex].x].GetComponent<MeshRenderer>().sharedMaterial;
     }
+
+
+    void openInvetory()
+    {
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            if (!invetoryVisuals.activeSelf)
+            {
+                pl.canMove = false;
+                pm.canMove = false;
+                canMove = false;
+                invetoryVisuals.SetActive(true);
+                Cursor.lockState = CursorLockMode.None;
+            }
+            else
+            {
+                pl.canMove = true;
+                pm.canMove = true;
+                canMove=true;
+                invetoryVisuals.SetActive(false);
+                Cursor.lockState = CursorLockMode.Locked;
+            }
+        }
+
+    }
+    void openSettings()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape) && !invetoryVisuals.activeSelf)
+        {
+            if (!pauseMenu.activeSelf)
+            {
+                pl.canMove = false;
+                pm.canMove = false;
+                canMove = false;
+                pauseMenu.SetActive(true);
+                Cursor.lockState = CursorLockMode.None;
+            }
+            else
+            {
+                pl.canMove = true;
+                pm.canMove = true;
+                canMove = true;
+                pauseMenu.SetActive(false);
+                Cursor.lockState = CursorLockMode.None;
+            }
+        }
+    }
+
     public int placeBlock()
     {
         if(invetory[currentIndex].x != 0)

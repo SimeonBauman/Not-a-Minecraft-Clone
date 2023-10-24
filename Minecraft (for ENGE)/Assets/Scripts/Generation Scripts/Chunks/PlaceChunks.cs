@@ -12,6 +12,10 @@ public class PlaceChunks : MonoBehaviour
 
     public GameObject playerUI;
 
+    public GameObject invetoryUI;
+
+    public GameObject pauseMenu;
+
     public GameObject player;
 
     public ChunkController[,] chunks;
@@ -32,7 +36,7 @@ public class PlaceChunks : MonoBehaviour
 
     public bool onStart = true;
 
-    float renderDist = 8;
+    float renderDist = 2;
 
     float sTime;
 
