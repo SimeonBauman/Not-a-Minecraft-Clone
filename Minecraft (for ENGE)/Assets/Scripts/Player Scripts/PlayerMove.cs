@@ -19,8 +19,16 @@ public class PlayerMove : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
-        
+    {/*
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            Settings.worldList();
+            Settings.printName();
+        }
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            Settings.printName();
+        }*/
 
         
         if (canMove)

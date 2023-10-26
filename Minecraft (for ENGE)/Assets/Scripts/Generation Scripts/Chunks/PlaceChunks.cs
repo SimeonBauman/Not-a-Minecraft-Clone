@@ -55,6 +55,7 @@ public class PlaceChunks : MonoBehaviour
     void Start()
     {
         //writeBiomes();
+        renderDist = Settings.renderDist;
         NoiseVars.chunkNum = chunkNum;
         NoiseVars.recalc(NoiseVars.Seed);
         
