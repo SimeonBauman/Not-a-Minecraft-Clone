@@ -13,7 +13,7 @@ public class PlayerInvetory : MonoBehaviour
     public GameObject[] hotBar = new GameObject[10];
     PlayerMove pm;
     PlayerLook pl;
-    bool canMove;
+    public bool canMove;
     public GameObject invetoryVisuals;
     public GameObject pauseMenu;
 
@@ -38,8 +38,8 @@ public class PlayerInvetory : MonoBehaviour
         {
             actions();
         }
-        openInvetory();
-        openSettings();
+       // openInvetory();
+        
     }
 
     void actions()
@@ -74,28 +74,7 @@ public class PlayerInvetory : MonoBehaviour
         }
 
     }
-    void openSettings()
-    {
-        if (Input.GetKeyDown(KeyCode.Escape) && !invetoryVisuals.activeSelf)
-        {
-            if (!pauseMenu.activeSelf)
-            {
-                pl.canMove = false;
-                pm.canMove = false;
-                canMove = false;
-                pauseMenu.SetActive(true);
-                Cursor.lockState = CursorLockMode.None;
-            }
-            else
-            {
-                pl.canMove = true;
-                pm.canMove = true;
-                canMove = true;
-                pauseMenu.SetActive(false);
-                Cursor.lockState = CursorLockMode.None;
-            }
-        }
-    }
+    
 
     public int placeBlock()
     {
