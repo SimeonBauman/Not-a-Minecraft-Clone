@@ -24,7 +24,7 @@ public class PlayerInvetory : MonoBehaviour
         pm = GetComponent<PlayerMove>();
         pl = GetComponentInChildren<PlayerLook>();
         invetoryVisuals = controller.invetoryUI;
-        pauseMenu = controller.pauseMenu;
+        pauseMenu = controller.PauseMenu;
 
         for(int i =0; i < hotBar.Length; i++)
         {
@@ -38,7 +38,7 @@ public class PlayerInvetory : MonoBehaviour
         {
             actions();
         }
-       // openInvetory();
+        openInvetory();
         
     }
 
@@ -53,7 +53,7 @@ public class PlayerInvetory : MonoBehaviour
 
     void openInvetory()
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        if ((Input.GetKeyDown(PlayerControlls.OpenInvetory) && !pauseMenu.activeSelf) || (Input.GetKeyDown(KeyCode.Escape) && !pauseMenu.activeSelf && invetoryVisuals.activeSelf))
         {
             if (!invetoryVisuals.activeSelf)
             {

@@ -1,16 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class pauseMenu : MonoBehaviour
 {
     public GameObject pauseMen;
     public GameObject player = null;
     public GameObject controller;
+    public GameObject graphicsSettings;
+    public GameObject MainSettings;
     // Start is called before the first frame update
     void Start()
     {
-
+        pauseMen.SetActive(false);
+        MainSettings.SetActive(false);
+        graphicsSettings.SetActive(false);
     }
 
     // Update is called once per frame
@@ -18,10 +23,10 @@ public class pauseMenu : MonoBehaviour
     {
         openSettings();
     }
-    void openSettings()
+    public void openSettings(bool throughUI = false)
     {
         
-        if ((Input.GetKeyDown(KeyCode.Escape) && !controller.GetComponent<PlaceChunks>().invetoryUI.activeSelf)) {
+        if ((Input.GetKeyDown(PlayerControlls.OpenSettings) && !controller.GetComponent<PlaceChunks>().invetoryUI.activeSelf) || throughUI) {
             if (player == null)
             {
                 player = controller.GetComponent<PlaceChunks>().player;
@@ -35,6 +40,7 @@ public class pauseMenu : MonoBehaviour
 
 
                 pauseMen.SetActive(true);
+                MainSettings.SetActive(true);
                 Cursor.lockState = CursorLockMode.None;
             }
             else
@@ -42,8 +48,30 @@ public class pauseMenu : MonoBehaviour
                 //player.GetComponent<PlayerInvetory>().canMove = true;
                 player.GetComponentInChildren<PlayerLook>().canMove = true;
                 pauseMen.SetActive(false);
-                Cursor.lockState = CursorLockMode.None;
+                MainSettings.SetActive(false);
+                graphicsSettings.SetActive(false);
+                Cursor.lockState = CursorLockMode.Locked;
             }
         }
     }
+
+    public void exitWorld()
+    {
+        SceneManager.LoadScene(0);
+    }
+
+    public void OpenGraphicsSettings()
+    {
+        if (graphicsSettings.activeSelf)
+        {
+            graphicsSettings.SetActive(false );
+            pauseMen.SetActive(true);
+        }
+        else
+        {
+            graphicsSettings.SetActive(true);
+            pauseMen.SetActive(false);
+        }
+    }
+
 }

@@ -14,7 +14,7 @@ public class PlaceChunks : MonoBehaviour
 
     public GameObject invetoryUI;
 
-    public GameObject pauseMenu;
+    public GameObject PauseMenu;
 
     public GameObject player;
 
@@ -58,7 +58,7 @@ public class PlaceChunks : MonoBehaviour
         renderDist = Settings.renderDist;
         NoiseVars.chunkNum = chunkNum;
         NoiseVars.recalc(NoiseVars.Seed);
-        
+        playerUI.SetActive(false);
         chunks = new ChunkController[chunkNum,chunkNum];
         
         
@@ -81,7 +81,7 @@ public class PlaceChunks : MonoBehaviour
         {
             onStart = false;
             player = new Player(NoiseVars.spawnPoint, this).p;
-            playerUI.SetActive(false);
+            
             playerUI.SetActive(true);
         }
         if(lastPlayerChunk != null)

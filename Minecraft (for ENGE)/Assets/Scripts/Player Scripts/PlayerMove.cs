@@ -1,4 +1,4 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -40,15 +40,17 @@ public class PlayerMove : MonoBehaviour
 
     void move()
     {
-        float x = Input.GetAxis("Horizontal");
-        float z = Input.GetAxis("Vertical");
+        
+        
+        float x = -Convert.ToInt32(Input.GetKey(PlayerControlls.Left)) + Convert.ToInt32(Input.GetKey(PlayerControlls.Right));
+        float z = -Convert.ToInt32(Input.GetKey(PlayerControlls.Backword)) + Convert.ToInt32(Input.GetKey(PlayerControlls.Forword));
 
         Vector3 move = (transform.right * x + transform.forward * z) * speed;
 
         if (controller.isGrounded)
         {
             vSpeed = 0;
-            if (Input.GetKey("space"))
+            if (Input.GetKey(PlayerControlls.Jump))
             {
                 vSpeed = 8;
             }
