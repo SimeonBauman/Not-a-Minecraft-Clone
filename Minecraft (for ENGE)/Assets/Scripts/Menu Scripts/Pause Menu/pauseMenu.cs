@@ -9,6 +9,7 @@ public class pauseMenu : MonoBehaviour
     public GameObject player = null;
     public GameObject controller;
     public GameObject graphicsSettings;
+    public GameObject controllsSettings;
     public GameObject MainSettings;
     // Start is called before the first frame update
     void Start()
@@ -16,6 +17,7 @@ public class pauseMenu : MonoBehaviour
         pauseMen.SetActive(false);
         MainSettings.SetActive(false);
         graphicsSettings.SetActive(false);
+        controllsSettings.SetActive(false);
     }
 
     // Update is called once per frame
@@ -50,6 +52,7 @@ public class pauseMenu : MonoBehaviour
                 pauseMen.SetActive(false);
                 MainSettings.SetActive(false);
                 graphicsSettings.SetActive(false);
+                controllsSettings.SetActive(false);
                 Cursor.lockState = CursorLockMode.Locked;
             }
         }
@@ -70,6 +73,20 @@ public class pauseMenu : MonoBehaviour
         else
         {
             graphicsSettings.SetActive(true);
+            pauseMen.SetActive(false);
+        }
+    }
+
+    public void OpenControllsSettings()
+    {
+        if (controllsSettings.activeSelf)
+        {
+            controllsSettings.SetActive(false);
+            pauseMen.SetActive(true);
+        }
+        else
+        {
+            controllsSettings.SetActive(true);
             pauseMen.SetActive(false);
         }
     }

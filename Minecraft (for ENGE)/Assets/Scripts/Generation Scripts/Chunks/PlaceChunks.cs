@@ -36,7 +36,7 @@ public class PlaceChunks : MonoBehaviour
 
     public bool onStart = true;
 
-    float renderDist = 2;
+    float renderDist = 3;
 
     float sTime;
 
@@ -87,7 +87,7 @@ public class PlaceChunks : MonoBehaviour
         if(lastPlayerChunk != null)
         {
             
-            if (lastPlayerChunk != GetChunkFromVector3(player.transform.position) ||Time.time > lastTime + 4)
+            if (lastPlayerChunk != GetChunkFromVector3(player.transform.position) ||Time.time > lastTime + 2)
             {
                 lastTime = (int)Time.time;
                 refreshRenderDist();

@@ -9,7 +9,7 @@ public class MainMenuUI : MonoBehaviour
     public GameObject main;
     public GameObject play;
     public TMP_InputField field;
-    
+    public GameObject background;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,6 +21,9 @@ public class MainMenuUI : MonoBehaviour
 
     public void createWorld()
     {
+        main.SetActive(false);
+        play.SetActive(false);
+        background.SetActive(false);
         int seed = Random.Range(0, int.MaxValue);
         if(field.text.Length > 0)
         {
@@ -35,5 +38,10 @@ public class MainMenuUI : MonoBehaviour
     {
         main.SetActive(false);
         play.SetActive(true);
+    }
+
+    public void quit()
+    {
+        Application.Quit();
     }
 }
