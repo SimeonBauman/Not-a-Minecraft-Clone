@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
+
 public class PlayerMove : MonoBehaviour
 {
     CharacterController controller;
@@ -45,7 +46,10 @@ public class PlayerMove : MonoBehaviour
         float x = -Convert.ToInt32(Input.GetKey(PlayerControlls.Left)) + Convert.ToInt32(Input.GetKey(PlayerControlls.Right));
         float z = -Convert.ToInt32(Input.GetKey(PlayerControlls.Backword)) + Convert.ToInt32(Input.GetKey(PlayerControlls.Forword));
 
-        Vector3 move = (transform.right * x + transform.forward * z) * speed;
+   
+
+
+        Vector3 move = (transform.right * Mathf.Abs(Input.GetAxis("Horizontal")) * x + transform.forward * Mathf.Abs(Input.GetAxis("Vertical")) * z) * speed;
 
         if (controller.isGrounded)
         {
