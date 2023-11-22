@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using static UnityEditor.PlayerSettings;
 
 public class ChunkController
 {
@@ -387,15 +388,15 @@ public class ChunkController
                 int xPos = Random.Range(2, 14); ;
                 
                 int zPos = Random.Range(2, 14);
-               
-               
+
                 for (int y = 1; y < 123; y++)
                 {
-                    if (blocks[xPos, y, zPos] != null && blocks[xPos, y, zPos].textIndex == 0 && (blocks[xPos, y-1, zPos].textIndex == 1 || blocks[xPos, y-1, zPos].textIndex == 2))
+                    if (blocks[xPos, y, zPos] != null && blocks[xPos, y, zPos].textIndex == 0 && (blocks[xPos, y - 1, zPos].textIndex == 1 || blocks[xPos, y - 1, zPos].textIndex == 2))
                     {
                         pos = y;
-                        
                         break;
+
+
                     }
                 }
 
@@ -466,4 +467,19 @@ public class ChunkController
         return returnVal;
         
     }
+
+    public int blockHeight(int xPos, int zPos)
+    {
+        for (int y = 1; y < 123; y++)
+        {
+            if (blocks[xPos, y, zPos] != null && blocks[xPos, y, zPos].textIndex == 0 && (blocks[xPos, y - 1, zPos].textIndex == 1 || blocks[xPos, y - 1, zPos].textIndex == 2))
+            {
+                return y;
+
+                
+            }
+        }
+        return 123;
+    }
+
 }

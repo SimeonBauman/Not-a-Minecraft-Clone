@@ -23,7 +23,16 @@ public class Player
         
         p.AddComponent<CharacterController>().radius = .4f;
         p.GetComponent<CharacterController>().height = 1.8f;
+        
+        PlayerStats ps = p.AddComponent<PlayerStats>();
+
+        ps.hearts = controller.hearts;
+
+        p.GetComponent<PlayerMove>().playerStats = ps;
+
+
         cam = new GameObject("eyes");
+
         
         cam.AddComponent<PlayerLook>().player = p.transform;
         cam.AddComponent<Build>().controller = controller;

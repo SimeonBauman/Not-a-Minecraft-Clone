@@ -10,31 +10,27 @@ public class PlayerMove : MonoBehaviour
     public int speed = 5;
     float vSpeed;
     public bool canMove;
+    float lastyPos = 0f;
+    public PlayerStats playerStats;
     // Start is called before the first frame update
     void Start()
     {
         controller= GetComponent<CharacterController>();
         canMove = true;
+        lastyPos = transform.position.y;
+
 
     }
 
     // Update is called once per frame
     void Update()
-    {/*
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            Settings.worldList();
-            Settings.printName();
-        }
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            Settings.printName();
-        }*/
+    {
 
         
         if (canMove)
         {
             move();
+            fallDamage();
         }
         
     }
@@ -65,5 +61,20 @@ public class PlayerMove : MonoBehaviour
         move.y = vSpeed;
 
         controller.Move(move * Time.deltaTime);
+    }
+
+    void fallDamage()
+    {
+        if(controller.isGrounded)
+        {
+            if(lastyPos - transform.position.y  > 4)
+            {
+                int damage = Mathf.RoundToInt(lastyPos - transform.position.y - 4);
+                playerStats.takeDamage(damage);
+                Debug.Log("did " + damage);
+            }
+            lastyPos = transform.position.y;
+
+        }
     }
 }

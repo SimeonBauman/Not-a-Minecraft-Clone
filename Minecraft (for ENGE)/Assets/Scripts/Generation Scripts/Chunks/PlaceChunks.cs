@@ -10,6 +10,8 @@ public class PlaceChunks : MonoBehaviour
 
     public GameObject[] hotBarSlots;
 
+    public GameObject[] hearts;
+
     public GameObject playerUI;
 
     public GameObject invetoryUI;
@@ -77,9 +79,11 @@ public class PlaceChunks : MonoBehaviour
     private void Update()
     {
         listLenth = chunksToGen.Count;
-        if(Time.realtimeSinceStartup > 10 && onStart && listLenth ==0)
+        if(Time.realtimeSinceStartup > 5 && onStart && listLenth ==0)
         {
             onStart = false;
+            ChunkController c = GetChunkFromVector3(NoiseVars.spawnPoint);
+            NoiseVars.spawnPoint.y = c.blockHeight((int)NoiseVars.spawnPoint.x - (c.index[0]*16), (int)NoiseVars.spawnPoint.z - (c.index[1]*16));
             player = new Player(NoiseVars.spawnPoint, this).p;
             
             playerUI.SetActive(true);
@@ -253,4 +257,6 @@ public class PlaceChunks : MonoBehaviour
     {
         this.renderDist = r;
     }
+
+    
 }
