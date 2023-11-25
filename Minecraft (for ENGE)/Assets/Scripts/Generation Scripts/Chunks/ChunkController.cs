@@ -253,6 +253,9 @@ public class ChunkController
         List<Vector3> Verticies = new List<Vector3>();
         List<Vector2> uv = new List<Vector2>();
 
+
+        //fixes chunk walls and chunk gaps
+
         for (int x = 0; x < size.x; x++)
         {
             for (int y = 1; y < size.y - 1; y++)
@@ -305,8 +308,6 @@ public class ChunkController
                                     AddQuad(o, Verticies.Count);
                                 }
                                
-
-
                             }
 
                             else if (blocks[nX, y + Faces[o, 5], nZ] == null || blocks[nX, y + Faces[o, 5], nZ].textIndex == 0 )
