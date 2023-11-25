@@ -11,7 +11,7 @@ public static class Settings
 
 
     // Graphics Settings
-    public static float renderDist = 2;
+    public static float renderDist = 50;
     public static bool shadows = true;
 
 
