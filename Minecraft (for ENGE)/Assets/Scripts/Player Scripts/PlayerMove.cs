@@ -45,7 +45,7 @@ public class PlayerMove : MonoBehaviour
    
 
 
-        Vector3 move = (transform.right * Mathf.Abs(Input.GetAxis("Horizontal")) * x + transform.forward * Mathf.Abs(Input.GetAxis("Vertical")) * z) * speed;
+        Vector3 move = (transform.right  * x + transform.forward * z) * speed;
 
         if (controller.isGrounded)
         {
