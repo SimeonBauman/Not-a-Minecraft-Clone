@@ -5,14 +5,16 @@ using System.IO;
 
 public static class Settings
 {
-
-    // Move Settings
+    public static PlaceChunks controller;
+    
+    
+    // Move Settings Vars
     public static float sensitivity = .5f;
 
-    public static PlaceChunks controller;
+    
     // Graphics Settings
     public static float renderDist = 2;
-    public static bool shadows = true;
+ 
 
     public static bool inGame = false;
 
@@ -66,9 +68,14 @@ public static class Settings
                     Screen.fullScreenMode = FullScreenMode.Windowed;
                     break;
             }
-                
-
             
+            PlayerControlls.Forword = (KeyCode)System.Enum.Parse(typeof(KeyCode), Settings.makeKeyCode(data[3]));
+            PlayerControlls.Backword = (KeyCode)System.Enum.Parse(typeof(KeyCode), Settings.makeKeyCode(data[4]));
+            PlayerControlls.Left = (KeyCode)System.Enum.Parse(typeof(KeyCode), Settings.makeKeyCode(data[5]));
+            PlayerControlls.Right = (KeyCode)System.Enum.Parse(typeof(KeyCode), Settings.makeKeyCode(data[6]));
+            PlayerControlls.Jump = (KeyCode)System.Enum.Parse(typeof(KeyCode), Settings.makeKeyCode(data[7]));
+            PlayerControlls.OpenSettings = (KeyCode)System.Enum.Parse(typeof(KeyCode), Settings.makeKeyCode(data[8]));
+            PlayerControlls.sensitivity = float.Parse(data[9]);
 
 
             if (Settings.inGame)
@@ -77,6 +84,23 @@ public static class Settings
                 controller.refreshRenderDist();
             }
         }
+    }
+
+    public static string makeKeyCode(string s)
+    {
+        string tempString = "";
+        for(int i = 0; i < s.Length; i++)
+        {
+            if(i == 0)
+            {
+                tempString += s[i].ToString().ToUpper();
+            }
+            else
+            {
+                tempString += s[i].ToString().ToLower();
+            }
+        }
+        return tempString;
     }
     
 }

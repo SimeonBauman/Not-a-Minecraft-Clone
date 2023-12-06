@@ -1,3 +1,10 @@
 2
 0
 3
+w
+S
+A
+D
+Space
+Escape
+.5

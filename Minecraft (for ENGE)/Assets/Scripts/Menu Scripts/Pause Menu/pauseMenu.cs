@@ -36,7 +36,11 @@ public class pauseMenu : MonoBehaviour
 
             if (!pauseMen.activeSelf)
             {
-               
+               if(graphicsSettings.activeSelf || controllsSettings.activeSelf)
+                {
+                    graphicsSettings.SetActive(false);
+                    controllsSettings.SetActive(false);
+                }
                 player.GetComponentInChildren<PlayerLook>().canMove = false;
 
 

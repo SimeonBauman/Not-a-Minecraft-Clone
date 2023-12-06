@@ -1,19 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 using UnityEngine;
 
 public class PlayerControlls{
 
-    public static KeyCode Forword = KeyCode.W;
-    public static KeyCode Backword = KeyCode.S;
-    public static KeyCode Left = KeyCode.A;
-    public static KeyCode Right = KeyCode.D;
+    public static KeyCode Forword;
+    public static KeyCode Backword;
+    public static KeyCode Left;
+    public static KeyCode Right;
 
-    public static KeyCode Jump = KeyCode.Space;
+    public static KeyCode Jump;
 
-    public static KeyCode OpenInvetory = KeyCode.E;
+    public static KeyCode OpenInvetory;
 
-    public static KeyCode OpenSettings = KeyCode.Escape;
+    public static KeyCode OpenSettings;
 
-
+    public static float sensitivity;
 }

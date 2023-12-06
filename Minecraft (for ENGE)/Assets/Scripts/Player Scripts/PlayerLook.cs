@@ -30,8 +30,8 @@ public class PlayerLook : MonoBehaviour
 
     void look()
     {
-        float mouseX = Input.GetAxis("Mouse X") * sensitivity;
-        float mouseY = Input.GetAxis("Mouse Y") * sensitivity;
+        float mouseX = Input.GetAxis("Mouse X") * PlayerControlls.sensitivity;
+        float mouseY = Input.GetAxis("Mouse Y") * PlayerControlls.sensitivity;
         xRotation -= mouseY;
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
         transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
