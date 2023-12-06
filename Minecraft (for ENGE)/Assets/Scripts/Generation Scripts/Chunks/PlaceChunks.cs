@@ -6,6 +6,13 @@ using UnityEngine.UI;
 
 public class PlaceChunks : MonoBehaviour
 {
+    //settings vars
+    float renderDist = 10;
+    public Light sun;
+
+    //other vars
+    public GameObject lodaingCamera;
+
     public int chunkNum = 10000;
 
     public GameObject[] hotBarSlots;
@@ -38,7 +45,7 @@ public class PlaceChunks : MonoBehaviour
 
     public bool onStart = true;
 
-    float renderDist = 10;
+    
 
     float sTime;
 
@@ -57,7 +64,12 @@ public class PlaceChunks : MonoBehaviour
     void Start()
     {
         //writeBiomes();
-        renderDist = Settings.renderDist;
+        
+        Settings.controller = this;
+        
+        Settings.updateSettings();
+        lodaingCamera.SetActive(true);
+        lodaingCamera.transform.position = new Vector3(8000, (renderDist * 16) +124, 8000);
         NoiseVars.chunkNum = chunkNum;
         NoiseVars.recalc(NoiseVars.Seed);
         playerUI.SetActive(false);
@@ -72,6 +84,7 @@ public class PlaceChunks : MonoBehaviour
         
 
         refreshRenderDist();
+        Settings.inGame = true;
         sTime= Time.time;
 
     }
@@ -85,7 +98,7 @@ public class PlaceChunks : MonoBehaviour
             ChunkController c = GetChunkFromVector3(NoiseVars.spawnPoint);
             NoiseVars.spawnPoint.y = c.blockHeight((int)NoiseVars.spawnPoint.x - (c.index[0]*16), (int)NoiseVars.spawnPoint.z - (c.index[1]*16));
             player = new Player(NoiseVars.spawnPoint, this).p;
-            
+            lodaingCamera.SetActive(false);
             playerUI.SetActive(true);
         }
         if(lastPlayerChunk != null)
@@ -115,7 +128,7 @@ public class PlaceChunks : MonoBehaviour
         Debug.Log(b);
     }
 
-    void refreshRenderDist()
+    public void refreshRenderDist()
     {
         Vector2 playerPos = new Vector2(player.transform.position.x, player.transform.position.z)/16;
         for (int i = (int)(playerPos.x - (renderDist +3)); i < (int)(playerPos.x + (renderDist + 3)); i++)

@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using System.IO;
 
 public static class Settings
 {
@@ -9,39 +9,75 @@ public static class Settings
     // Move Settings
     public static float sensitivity = .5f;
 
-
+    public static PlaceChunks controller;
     // Graphics Settings
-    public static float renderDist = 12;
+    public static float renderDist = 2;
     public static bool shadows = true;
 
+    public static bool inGame = false;
 
-    /*
-     public static void worldList()
-     {
-         [SerializeField]private data d = new data();
+    public static string dataSettingsPath = "Assets/Scripts/DataScripts/Data.txt";
 
-         nums.Add(new int { });
-         nums.Add(new int { });
-         var jsonData = JsonUtility.ToJson(nums);
-         System.IO.File.WriteAllText(Application.persistentDataPath + "/PotionData.json", jsonData);
-     }
+    public static string[] outputData()
+    {
+        string[] arrLine = File.ReadAllLines(dataSettingsPath);
 
-     public static void printName()
-     {
-         var jsonData = System.IO.File.ReadAllText(Application.persistentDataPath + "/PotionData.json");
-         Debug.Log(jsonData);
-         List<int> n =  JsonUtility.FromJson<List<int>>(jsonData);
-         Debug.Log(n[0]);
-         Debug.Log(n[1]);
+        return arrLine;
+    }
 
-     }
+    public static void editData(int line, string value)
+    {
+        string[] arrLine = File.ReadAllLines(dataSettingsPath);
+        arrLine[line] = value;
+        File.WriteAllLines(dataSettingsPath, arrLine);
+        Settings.updateSettings();
+    }
 
- }*/
+    public static void updateSettings()
+    {
+        if (controller != null)
+        {
+            string[] data = Settings.outputData();
+
+            controller.changeRenderDist(float.Parse(data[2]));
+
+            switch (int.Parse(data[0])) {
+                case 0:
+                    controller.sun.shadows = LightShadows.Soft;
+                    break;
+                case 1:
+                    controller.sun.shadows = LightShadows.Hard;
+                    break;
+                case 2:
+                    controller.sun.shadows = LightShadows.None;
+                    break;
+               
+            }
+
+            switch (int.Parse(data[1]))
+            {
+                case 0:
+                    Screen.fullScreenMode = FullScreenMode.ExclusiveFullScreen;
+                    break;
+                case 1:
+                    Screen.fullScreenMode = FullScreenMode.FullScreenWindow;
+                    break;
+                case 2:
+                    Screen.fullScreenMode = FullScreenMode.Windowed;
+                    break;
+            }
+                
+
+            
+
+
+            if (Settings.inGame)
+            {
+                
+                controller.refreshRenderDist();
+            }
+        }
+    }
+    
 }
 
-[System.Serializable]
-public class data
-{
-    public static List<int> nums = new List<int>();
-
-}
