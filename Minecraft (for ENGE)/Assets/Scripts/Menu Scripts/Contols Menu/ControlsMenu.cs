@@ -12,7 +12,7 @@ public class ControlsMenu : MonoBehaviour
     public TMP_InputField right;
     public TMP_InputField jump;
 
-
+    public TMP_InputField sensitivity;
 
     private void Awake()
     {
@@ -22,6 +22,7 @@ public class ControlsMenu : MonoBehaviour
         left.text = values[5];
         right.text = values[6];
         jump.text = values[7];
+        sensitivity.text = values[9];
 
     }
 
@@ -55,6 +56,10 @@ public class ControlsMenu : MonoBehaviour
         Settings.editData(7, value);
 
     }
-
+    public void changeSensitivty()
+    {
+        string value = sensitivity.text;
+        Settings.editData(9, value);
+    }
 
 }

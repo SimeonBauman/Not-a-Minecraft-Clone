@@ -1244,6 +1244,7 @@ MonoBehaviour:
   play: {fileID: 1494028804}
   field: {fileID: 371688037}
   background: {fileID: 480188377}
+  settings: {fileID: 0}
 --- !u!1 &779251178
 GameObject:
   m_ObjectHideFlags: 0
