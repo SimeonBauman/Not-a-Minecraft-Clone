@@ -10,13 +10,13 @@ public class MainMenuUI : MonoBehaviour
     public GameObject play;
     public TMP_InputField field;
     public GameObject background;
-    public GameObject settings;
+ 
     // Start is called before the first frame update
     void Start()
     {
         main.SetActive(true);
         play.SetActive(false);
-        settings.SetActive(false);
+     
     }
 
    
@@ -42,11 +42,7 @@ public class MainMenuUI : MonoBehaviour
         play.SetActive(true);
     }
 
-    public void OpenSettings()
-    {
-        main.SetActive(false);
-        settings.SetActive(true);
-    }
+    
 
     public void quit()
     {
