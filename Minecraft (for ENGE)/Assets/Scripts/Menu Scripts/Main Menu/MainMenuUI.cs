@@ -9,6 +9,7 @@ public class MainMenuUI : MonoBehaviour
     public GameObject main;
     public GameObject play;
     public TMP_InputField field;
+    public TMP_InputField name;
     public GameObject background;
  
     // Start is called before the first frame update
@@ -23,7 +24,7 @@ public class MainMenuUI : MonoBehaviour
 
     public void createWorld()
     {
-        main.SetActive(false);
+        /*main.SetActive(false);
         play.SetActive(false);
         background.SetActive(false);
         int seed = Random.Range(0, int.MaxValue);
@@ -33,7 +34,8 @@ public class MainMenuUI : MonoBehaviour
             Debug.Log(seed);
         }
         NoiseVars.recalc(seed);
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(1);*/
+        CreateWorldFiles.createWorld(name.text, field.text);
     }
 
     public void onPlay()
