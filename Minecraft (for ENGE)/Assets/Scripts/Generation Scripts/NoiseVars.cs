@@ -12,6 +12,7 @@ public class NoiseVars
     public static Vector3 spawnPoint;
     public static int chunkNum = 10000;
     public static int Seed = 0;
+    public static string name;
     public static void recalc(int seed)
     {
         Random.seed = seed;
@@ -20,8 +21,11 @@ public class NoiseVars
         zOff = Random.Range(0, 1000000);
         bXOff = (float)Random.Range(0, 100000) / 10;
         bZOff =(float) Random.Range(0, 100000) /10;
-   
-        spawnPoint = new Vector3( chunkNum * 8, 100, chunkNum * 8);
+
+        if (spawnPoint == null)
+        {
+            spawnPoint = new Vector3(chunkNum * 8, 100, chunkNum * 8);
+        }
 
     }
 

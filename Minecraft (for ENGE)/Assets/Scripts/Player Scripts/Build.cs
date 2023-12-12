@@ -62,6 +62,7 @@ public class Build : MonoBehaviour
                     }
                     
                     c.blocks[(int)p.x, (int)p.y, (int)p.z] = new Block(0);
+                    c.hasChanged = true;
                     c.GenerateMesh();
 
                     checkForChunkEdge(p, c);
@@ -95,6 +96,7 @@ public class Build : MonoBehaviour
                 p -= g.transform.position;
                 PlayerInvetory Pi = transform.parent.GetComponent<PlayerInvetory>();
                 c.blocks[(int)p.x, (int)p.y, (int)p.z] = new Block(Pi.placeBlock());
+                c.hasChanged = true;
                 c.GenerateMesh();
 
             }

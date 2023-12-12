@@ -45,7 +45,7 @@ public class PlaceChunks : MonoBehaviour
 
     public bool onStart = true;
 
-    
+    public List<ChunkController> createdChunks = new List<ChunkController>();
 
     float sTime;
 
@@ -239,6 +239,7 @@ public class PlaceChunks : MonoBehaviour
         c.player = player;
         c.index = new int[] {i, j };
         c.chunkObject.transform.parent = this.transform;
+        createdChunks.Add(c);
         StartCoroutine( c.generateChunk(onStart));
     }
 

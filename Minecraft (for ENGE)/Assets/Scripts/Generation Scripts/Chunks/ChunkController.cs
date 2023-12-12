@@ -23,7 +23,7 @@ public class ChunkController
     MeshCollider meshCollider;
     MeshFilter meshFilter;
 
-   bool small = false;
+    public bool hasChanged = false;
 
     Vector3 size = new Vector3(16, 124, 16);
 
@@ -51,7 +51,7 @@ public class ChunkController
 
         this.controller = controller;
         chunkObject = new GameObject().gameObject;
-        chunkObject.name = b.name;
+        chunkObject.name = ((pos.x * 100) + pos.z).ToString();
         meshFilter = chunkObject.AddComponent<MeshFilter>();
         this.biome = b;
         meshCollider = chunkObject.AddComponent<MeshCollider>();
@@ -67,76 +67,120 @@ public class ChunkController
 
     public IEnumerator generateChunk(bool onCreate = false)
     {
-
+        
         Random.seed = controller.seed;
         float offX = (chunkObject.transform.position.x - 7.5f + NoiseVars.xOff);
         float offZ = (chunkObject.transform.position.z - 7.5f + NoiseVars.zOff);
 
-        int airBlocks = 0;
-        bool finish = false;
-        for (int y = 0; y < size.y - 0; y++)
+        if (CreateWorldFiles.chunkIsSaved(this))
         {
-            for (int x = 0; x < size.x - 0; x++)
+            string data = CreateWorldFiles.returnData(this);
+            int x = 0;
+            int y = 0;
+            int z = 0;
+            int i = 0;
+            string num = "";
+            while (i<data.Length)
             {
-                for (int z = 0; z < size.z - 0; z++)
+                if (data[i] == ',')
                 {
-
-                    if (finish)
+                    Debug.Log(num);
+                    blocks[x, y, z]  = new Block( int.Parse(num));
+                    num = "";
+                    i++;
+                    z++;
+                    if (z == 16)
                     {
-                        blocks[x, y, z] = new Block(0);
+                        z = 0;
+                        y++;
                     }
-                    else
+                    if (y == 124)
                     {
-                        float pX = ((x + offX));
-                        float pZ = ((z  + offZ)) ;
-                        float pNoise = (Mathf.PerlinNoise(pX / 50, pZ / 50) * biome.biomeStepth) + 25;
-                        float pNoise2 = (Mathf.PerlinNoise(pX / 75, pZ / 75) * biome.biomeStepth / 2) + 25;
+                        y = 0;
+                        x++;
+                    }
+                    if (x == 16)
+                    {
+                        break;
+                    }
+                }
+                else
+                {
+                    num += data[i];
+                    i++;
+                }
+            }
+        }
+        else
+        {
 
 
-                        if (y <= 50 && pNoise2 >= y)
-                        {
+            int airBlocks = 0;
+            bool finish = false;
+            for (int y = 0; y < size.y - 0; y++)
+            {
+                for (int x = 0; x < size.x - 0; x++)
+                {
+                    for (int z = 0; z < size.z - 0; z++)
+                    {
 
-                            blocks[x, y, z] = new Block(layers(y,pNoise2,x));
-
-
-
-
-                        }
-                        else if (pNoise >= y)
-                        {
-
-
-                            blocks[x, y, z] = new Block(layers(y,pNoise,x));
-
-
-                        }
-                        
-                        else
+                        if (finish)
                         {
                             blocks[x, y, z] = new Block(0);
-                            airBlocks++;
                         }
+                        else
+                        {
+                            float pX = ((x + offX));
+                            float pZ = ((z + offZ));
+                            float pNoise = (Mathf.PerlinNoise(pX / 50, pZ / 50) * biome.biomeStepth) + 25;
+                            float pNoise2 = (Mathf.PerlinNoise(pX / 75, pZ / 75) * biome.biomeStepth / 2) + 25;
+
+
+                            if (y <= 50 && pNoise2 >= y)
+                            {
+
+                                blocks[x, y, z] = new Block(layers(y, pNoise2, x));
+
+
+
+
+                            }
+                            else if (pNoise >= y)
+                            {
+
+
+                                blocks[x, y, z] = new Block(layers(y, pNoise, x));
+
+
+                            }
+
+                            else
+                            {
+                                blocks[x, y, z] = new Block(0);
+                                airBlocks++;
+                            }
+                        }
+
                     }
 
+
                 }
+                if (!onCreate)
+                    yield return null;
+
+                if (airBlocks == 256)
+                {
+
+                    finish = true;
+
+                }
+                else airBlocks = 0;
 
 
             }
-            if (!onCreate)
-                yield return null;
+            placeTree();
 
-            if (airBlocks == 256) {
-
-               finish = true;
-
-            }
-            else airBlocks = 0;
-
-            
         }
-        placeTree();
-
-       
 
     }
 

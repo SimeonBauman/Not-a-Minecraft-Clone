@@ -8,9 +8,12 @@ public class MainMenuUI : MonoBehaviour
 {
     public GameObject main;
     public GameObject play;
+    public GameObject worlds;
     public TMP_InputField field;
     public TMP_InputField name;
     public GameObject background;
+
+    public GameObject worldSelectionButtons;
  
     // Start is called before the first frame update
     void Start()
@@ -24,7 +27,7 @@ public class MainMenuUI : MonoBehaviour
 
     public void createWorld()
     {
-        /*main.SetActive(false);
+        main.SetActive(false);
         play.SetActive(false);
         background.SetActive(false);
         int seed = Random.Range(0, int.MaxValue);
@@ -33,18 +36,33 @@ public class MainMenuUI : MonoBehaviour
             seed = int.Parse(field.text);
             Debug.Log(seed);
         }
+        CreateWorldFiles.createWorld(name.text, seed.ToString());
         NoiseVars.recalc(seed);
-        SceneManager.LoadScene(1);*/
-        CreateWorldFiles.createWorld(name.text, field.text);
+        SceneManager.LoadScene(1);
+        
     }
 
     public void onPlay()
     {
         main.SetActive(false);
-        play.SetActive(true);
+        string[] worlds = CreateWorldFiles.getWorlds();
+        for(int i = 0; i < worlds.Length; i++)
+        {
+            GameObject g = Instantiate(worldSelectionButtons);
+            g.transform.parent = transform;
+            g.transform.localScale = new Vector3(1,1,1);
+            g.transform.localPosition = new Vector2(0, -i * 60);
+            g.GetComponentInChildren<TMP_Text>().text = worlds[i];
+
+        }
+        this.worlds.SetActive(true);
     }
 
-    
+    public void onCreate()
+    {
+        this.worlds.SetActive(false );
+        play.SetActive(true );
+    }
 
     public void quit()
     {
