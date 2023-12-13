@@ -5874,6 +5874,7 @@ MonoBehaviour:
   - {fileID: 8092650829203356739, guid: 1b3a525000593524aa8d3a18e5c00840, type: 3}
   - {fileID: 8092650829203356739, guid: 831b60fb7b3cfe34799bd9a0dec68155, type: 3}
   - {fileID: 8092650829203356739, guid: db45662ae8895df4697ce5ae0da6ca68, type: 3}
+  - {fileID: 8092650829203356739, guid: 3d87c1ed88468c2448117cc51daaf6e7, type: 3}
   texturePack: {fileID: 2100000, guid: c8bdde88303ccc24eaad965bb5a290d1, type: 2}
   highlighter: {fileID: 1332673682}
   hand: {fileID: 1754431348}
@@ -9142,7 +9143,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c8bdde88303ccc24eaad965bb5a290d1, type: 2}
+  - {fileID: 2100000, guid: 442a67c02f30a244a9d12057d87165dd, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

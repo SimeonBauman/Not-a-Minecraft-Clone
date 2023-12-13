@@ -97,7 +97,7 @@ public class pauseMenu : MonoBehaviour
 
     public void saveWorld()
     {
-        CreateWorldFiles.saveWorld("Assets/Worlds/test1/", controller.GetComponent<PlaceChunks>().createdChunks,player);
+        CreateWorldFiles.saveWorld("Assets/Worlds/" + NoiseVars.name +"/", controller.GetComponent<PlaceChunks>().createdChunks,player);
     }
 
 }

@@ -28,6 +28,7 @@ public class ChunkController
     Vector3 size = new Vector3(16, 124, 16);
 
     Biome biome;
+    public string biomeName;
 
     Vector3[] VertPos = new Vector3[8]{
                         new Vector3(-1, 1, -1), new Vector3(-1, 1, 1),
@@ -59,6 +60,7 @@ public class ChunkController
         chunkObject.transform.position = pos;
         chunkObject.layer = 6;
         blocks = new Block[(int)size.x, (int)size.y, (int)size.z];
+        
 
 
     }
@@ -339,6 +341,7 @@ public class ChunkController
                                 }
                                 else if (nZ == -1 || nZ == 16)
                                 {
+                                 
                                     c = controller.chunks[index[0], index[1] + (nZ % 15)];
    
 
@@ -426,7 +429,8 @@ public class ChunkController
             
             
             float r = Random.Range(0, 100);
-         
+            int treeNum = Random.Range(0, 2);
+            Debug.Log(treeNum);
             if ( r < biome.treeOdds)
             {
 
@@ -448,7 +452,7 @@ public class ChunkController
                 if (pos != 0)
                 {
 
-                    for (int y = 0; y < Tree.treeTemp.GetLength(0); y++)
+                    for (int y = 0; y < Tree.trees[treeNum].GetLength(0); y++)
                     {
                         for (int x = -2 + xPos; x <= 2 + xPos; x++)
                         {
@@ -456,7 +460,7 @@ public class ChunkController
                             {
                                 if (blocks[x, y + pos, z].textIndex == 0)
                                 {
-                                    this.blocks[x, y + pos, z] = new Block(Tree.treeTemp[Tree.treeTemp.GetLength(0) - 1 - y, x + 2 - xPos, z + 2 - zPos]);
+                                    this.blocks[x, y + pos, z] = new Block(Tree.trees[treeNum] [Tree.trees[treeNum].GetLength(0) - 1 - y, x + 2 - xPos, z + 2 - zPos]);
                                 }
                             }
                         }

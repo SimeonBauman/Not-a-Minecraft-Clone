@@ -9,7 +9,7 @@ public class NoiseVars
     public static int zOff = Random.Range(0, 1000000);
     public static float bXOff = Random.Range(0, 1000000);
     public static float bZOff = Random.Range(0, 1000000);
-    public static Vector3 spawnPoint;
+    public static Vector3 spawnPoint = Vector3.zero;
     public static int chunkNum = 10000;
     public static int Seed = 0;
     public static string name;
@@ -22,9 +22,9 @@ public class NoiseVars
         bXOff = (float)Random.Range(0, 100000) / 10;
         bZOff =(float) Random.Range(0, 100000) /10;
 
-        if (spawnPoint == null)
+        if (spawnPoint == Vector3.zero)
         {
-            spawnPoint = new Vector3(chunkNum * 8, 100, chunkNum * 8);
+            spawnPoint = new Vector3(NoiseVars.chunkNum * .8f, 100, NoiseVars.chunkNum * .8f);
         }
 
     }

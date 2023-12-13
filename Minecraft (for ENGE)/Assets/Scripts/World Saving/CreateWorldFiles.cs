@@ -2,8 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
-using System.Globalization;
-using Unity.VisualScripting.Antlr3.Runtime.Tree;
+using UnityEngine.SceneManagement;
 
 public class CreateWorldFiles : MonoBehaviour
 {
@@ -34,26 +33,34 @@ public class CreateWorldFiles : MonoBehaviour
         currentName = name;
         System.IO.Directory.CreateDirectory(worldPath);
         worldPath += "/";
-        NoiseVars.Seed = int.Parse(seed);
+        
         NoiseVars.name = name;
         using (StreamWriter sw = File.CreateText(worldPath + "worldData.txt"))
         {
             sw.WriteLine(name);
             sw.WriteLine(seed);
-           
+            sw.WriteLine(0);
+            sw.WriteLine(0);
+            sw.WriteLine(0);
+
+
         }
         System.IO.Directory.CreateDirectory(worldPath + "Chunks");
         
     }
 
-    public static void loadWorld(string path)
+    public static void loadWorld(string name)
     {
-        string[] data = File.ReadAllLines(path + "worldData.txt");
-        NoiseVars.Seed = int.Parse(data[1]);
+        string[] data = File.ReadAllLines("Assets/Worlds/" + name + "/worldData.txt");
+        NoiseVars.recalc(int.Parse(data[1]));
+       
         NoiseVars.name = data[0];
         NoiseVars.spawnPoint.x = float.Parse(data[2]);
+        Debug.Log(data[2]);
+        Debug.Log(NoiseVars.spawnPoint.x);
         NoiseVars.spawnPoint.y = float.Parse(data[3]);
         NoiseVars.spawnPoint.z = float.Parse(data[4]);
+        SceneManager.LoadScene(1);
     }
     public static void saveWorld(string path,List<ChunkController> chunks,GameObject player)
     {
@@ -101,13 +108,13 @@ public class CreateWorldFiles : MonoBehaviour
 
     public static bool chunkIsSaved(ChunkController chunk)
     {
-        return File.Exists("Assets/Worlds/test1/Chunks/" + chunk.chunkObject.name + ".txt");
+        return File.Exists("Assets/Worlds/" + NoiseVars.name + "/Chunks/" + chunk.chunkObject.name + ".txt");
     }
 
     public static string returnData(ChunkController chunk)
     {
         
-        return File.ReadAllText("Assets/Worlds/test1/Chunks/" + chunk.chunkObject.name + ".txt");
+        return File.ReadAllText("Assets/Worlds/" + NoiseVars.name + "/Chunks/" + chunk.chunkObject.name + ".txt");
     }
 
 

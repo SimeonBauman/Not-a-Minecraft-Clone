@@ -49,10 +49,12 @@ public class MainMenuUI : MonoBehaviour
         for(int i = 0; i < worlds.Length; i++)
         {
             GameObject g = Instantiate(worldSelectionButtons);
-            g.transform.parent = transform;
+            g.transform.parent = this.worlds.transform;
             g.transform.localScale = new Vector3(1,1,1);
             g.transform.localPosition = new Vector2(0, -i * 60);
             g.GetComponentInChildren<TMP_Text>().text = worlds[i];
+            g.name = worlds[i];
+            g.GetComponentInChildren<Button>().onClick.AddListener(delegate { CreateWorldFiles.loadWorld(g.name); });
 
         }
         this.worlds.SetActive(true);

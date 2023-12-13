@@ -70,11 +70,11 @@ public class PlaceChunks : MonoBehaviour
         Settings.updateSettings();
         lodaingCamera.SetActive(true);
         lodaingCamera.transform.position = new Vector3(8000, (renderDist * 16) +124, 8000);
-        NoiseVars.chunkNum = chunkNum;
+        chunkNum = NoiseVars.chunkNum;
         NoiseVars.recalc(NoiseVars.Seed);
         playerUI.SetActive(false);
         chunks = new ChunkController[chunkNum,chunkNum];
-        
+        Tree.createList();
         
         player.transform.position = NoiseVars.spawnPoint;
 

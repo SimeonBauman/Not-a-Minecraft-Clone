@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class Tree 
 {
+    public int[,,] treePrint;
+  
+
+   
+  
+
     public static int[,,] treeTemp = new int[6,5,5]{
 
 
@@ -16,4 +22,25 @@ public class Tree
         
 
     };
+    public static int[,,] fallTree = new int[6, 5, 5]{
+
+
+        {{ 0,0,0,0,0},{ 0,0,9,0,0},{0,9,9,9,0 },{ 0,0,9,0,0},{ 0,0,0,0,0} },
+        {{ 0,0,0,0,0},{ 0,0,9,0,0},{0,9,4,9,0 },{ 0,0,9,0,0},{ 0,0,0,0,0} },
+        {{ 9,9,9,9,9},{ 9,9,9,9,9},{9,9,4,9,9 },{ 9,9,9,9,9},{ 9,9,9,9,9} },
+        {{ 9,9,9,9,9},{ 9,9,9,9,9},{9,9,4,9,9 },{ 9,9,9,9,9},{ 9,9,9,9,9} },
+        {{ 0,0,0,0,0},{ 0,0,0,0,0},{0,0,4,0,0 },{ 0,0,0,0,0},{ 0,0,0,0,0} },
+        {{ 0,0,0,0,0},{ 0,0,0,0,0},{0,0,4,0,0 },{ 0,0,0,0,0},{ 0,0,0,0,0} }
+
+
+    };
+    
+    public static List<int[,,]> trees = new List<int[,,]>();
+
+    public static void createList()
+    {
+        trees.Add(Tree.treeTemp);
+        trees.Add(Tree.fallTree);
+    }
+    
 }
