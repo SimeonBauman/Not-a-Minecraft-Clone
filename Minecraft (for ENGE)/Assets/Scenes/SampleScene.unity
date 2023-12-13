@@ -5875,6 +5875,8 @@ MonoBehaviour:
   - {fileID: 8092650829203356739, guid: 831b60fb7b3cfe34799bd9a0dec68155, type: 3}
   - {fileID: 8092650829203356739, guid: db45662ae8895df4697ce5ae0da6ca68, type: 3}
   - {fileID: 8092650829203356739, guid: 3d87c1ed88468c2448117cc51daaf6e7, type: 3}
+  - {fileID: 8092650829203356739, guid: 231ffb09fccfb4549a0fb3228f56f74a, type: 3}
+  - {fileID: 8092650829203356739, guid: 9d066e59bd4bf894f8cec2f61e12300c, type: 3}
   texturePack: {fileID: 2100000, guid: c8bdde88303ccc24eaad965bb5a290d1, type: 2}
   highlighter: {fileID: 1332673682}
   hand: {fileID: 1754431348}

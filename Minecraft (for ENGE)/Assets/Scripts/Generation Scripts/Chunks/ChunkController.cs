@@ -1,3 +1,4 @@
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -181,6 +182,7 @@ public class ChunkController
 
             }
             placeTree();
+            placeTemple();
 
         }
 
@@ -429,8 +431,8 @@ public class ChunkController
             
             
             float r = Random.Range(0, 100);
-            int treeNum = Random.Range(0, 2);
-            Debug.Log(treeNum);
+            int treeNum = Random.Range(0, Tree.trees.Count);
+            
             if ( r < biome.treeOdds)
             {
 
@@ -474,7 +476,62 @@ public class ChunkController
         }
         Random.seed = seed;
     }
-    
+    void placeTemple()
+    {
+        int seed = Random.seed;
+        int pos = 0;
+        Random.seed = NoiseVars.Seed;
+
+
+        Random.seed = Mathf.RoundToInt((( Mathf.PerlinNoise(chunkObject.transform.position.x / 50, chunkObject.transform.position.z / 50) * biome.biomeStepth) + 25));
+
+
+        float r = Random.Range(0, 100);
+            int treeNum = Random.Range(0, Tree.trees.Count);
+            Debug.Log(r);
+            if (r < 5)
+            {
+
+                int xPos = Random.Range(2, 14); ;
+
+                int zPos = Random.Range(2, 14);
+
+                for (int y = 1; y < 123; y++)
+                {
+                    if (blocks[xPos, y, zPos] != null && blocks[xPos, y, zPos].textIndex == 0 && (blocks[xPos, y - 1, zPos].textIndex == 1 || blocks[xPos, y - 1, zPos].textIndex == 2))
+                    {
+                        pos = y;
+                        break;
+
+
+                    }
+                }
+
+                if (pos != 0)
+                {
+
+                    for (int y = 0; y < Tree.Temple.GetLength(0); y++)
+                    {
+                        for (int x = -2 + xPos; x <= 2 + xPos; x++)
+                        {
+                            for (int z = -2 + zPos; z <= 2 + zPos; z++)
+                            {
+                                if (blocks[x, y + pos, z].textIndex == 0)
+                                {
+                                    this.blocks[x, y + pos, z] = new Block(Tree.Temple[Tree.Temple.GetLength(0) - 1 - y, x + 2 - xPos, z + 2 - zPos]);
+                                }
+                            }
+                        }
+                    }
+                }
+                
+
+            }
+
+            pos = 0;
+        
+        Random.seed = seed;
+    }
 
     int layers(float y, float height, int xPos)
     {
